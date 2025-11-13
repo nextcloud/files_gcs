@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<info xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:noNamespaceSchemaLocation="https://apps.nextcloud.com/schema/apps/info.xsd">
+	<id>files_gcs</id>
+	<name>Files GCS</name>
+	<summary>Manage buckets in Google Cloud Storage</summary>
+	<description>Manage your Google Cloud Storage buckets with support for GCS-specific features like autoclass</description>
+	<version>1.0.0</version>
+	<licence>agpl</licence>
+	<author mail="kent.delante@proton.me" homepage="">Kent Delante</author>
+	<namespace>FilesGCS</namespace>
+	<category>files</category>
+	<bugs>https://github.com/nextcloud/files_gcs/issues</bugs>
+	<dependencies>
+		<nextcloud min-version="29" max-version="33"/>
+	</dependencies>
+</info>
