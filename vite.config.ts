@@ -10,5 +10,8 @@ export default createAppConfig(
     createEmptyCSSEntryPoints: true,
     extractLicenseInformation: true,
     thirdPartyLicense: false,
+	inlineCSS: {
+		relativeCSSInjection: true,
+	}
   }
 );

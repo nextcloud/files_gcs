@@ -14,4 +14,9 @@
 	<dependencies>
 		<nextcloud min-version="29" max-version="33"/>
 	</dependencies>
+
+	<settings>
+	  <admin>OCA\FilesGCS\Settings\Admin</admin>
+	  <admin-section>OCA\FilesGCS\Settings\Section</admin-section>
+	</settings>
 </info>
