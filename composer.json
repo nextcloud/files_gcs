@@ -5,8 +5,7 @@
 	"authors": [
 		{
 			"name": "Kent Delante",
-			"email": "kent.delante@proton.me",
-			"homepage": ""
+			"email": "kent.delante@proton.me"
 		}
 	],
 	"autoload": {
@@ -30,8 +29,10 @@
 		"rector": "rector && composer cs:fix"
 	},
 	"require": {
+		"php": "^8.1",
 		"bamarni/composer-bin-plugin": "^1.8",
-		"php": "^8.1"
+		"google/auth": "^1.44",
+		"google/cloud-storage": "^1.48"
 	},
 	"require-dev": {
 		"nextcloud/ocp": "dev-stable30",
