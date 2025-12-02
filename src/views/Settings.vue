@@ -22,7 +22,8 @@
 			 ref="importer"
 			 class="settings__importerInput"
 			 @change="saveCredentials">
-	  <NcButton variant="secondary" @click="importFile">
+	  <NcButton variant="secondary" @click="importFile" :disabled="loading">
+		  <template #icon v-if="loading"><NcLoadingIcon /></template>
 		{{ t('files_gcs', credentialsExist ? 'Import new credentials' : 'Import credentials') }}
 	  </NcButton>
 	  <div class="settings__importerMessage"
@@ -41,6 +42,7 @@ import { ref, onMounted } from 'vue'
 import {
 	NcButton,
 	NcCheckboxRadioSwitch,
+	NcLoadingIcon,
 	NcSettingsSection,
 	NcSelect
 } from '@nextcloud/vue'
@@ -50,6 +52,7 @@ const terminalStorageClass = ref('Nearline')
 const credentialsExist = ref(false)
 const storageClasses = ref(['Nearline', 'Archive'])
 const importer = ref(null)
+const loading = ref(false)
 
 onMounted(() => {
 	loadConfig()
@@ -61,17 +64,21 @@ function importFile() {
 }
 
 async function loadConfig() {
+	loading.value = true
 	const { data } = await axios.get(generateUrl('apps/files_gcs/config'))
 	autoclassEnabled.value = data.ocs.data.autoclassEnabled
 	terminalStorageClass.value = data.ocs.data.terminalStorageClass
 	credentialsExist.value = data.ocs.data.credentialsExist
+	loading.value = false
 }
 
 async function saveConfig() {
+	loading.value = true
 	const { data } = await axios.put(generateUrl('apps/files_gcs/config'), {
 		autoclassEnabled: autoclassEnabled.value,
 		terminalStorageClass: terminalStorageClass.value
 	})
+	loading.value = false
 }
 
 async function saveCredentials(event: Event) {
@@ -79,11 +86,13 @@ async function saveCredentials(event: Event) {
 		return
 	}
 
+	loading.value = true
 	const formData = new FormData()
 	let file = event.target.files[0]
 	formData.append('credentials', file)
 
 	const { data } = await axios.post(generateUrl('apps/files_gcs/config/credentials'), formData)
+	loading.value = false
 }
 </script>
 
