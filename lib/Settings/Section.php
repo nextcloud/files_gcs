@@ -16,7 +16,8 @@ class Section implements IIconSection {
 	public function __construct(
 		private IL10N $l10n,
 		private IURLGenerator $url,
-	) {}
+	) {
+	}
 
 	public function getID(): string {
 		return 'files_gcs';

@@ -13,7 +13,8 @@ use OCP\AppFramework\Services\IAppConfig;
 class Config {
 	public function __construct(
 		private IAppConfig $appConfig,
-	) {}
+	) {
+	}
 
 	public function setAutoclassEnabled(bool $enabled): void {
 		$this->appConfig->setAppValueBool('autoclass_enabled', $enabled);

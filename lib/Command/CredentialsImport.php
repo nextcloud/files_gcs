@@ -15,7 +15,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CredentialsImport extends Command {
 	public function __construct(
-		private Config $config
+		private Config $config,
 	) {
 		parent::__construct();
 	}

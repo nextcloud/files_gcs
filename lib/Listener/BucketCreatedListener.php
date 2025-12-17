@@ -8,18 +8,18 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Listener;
 
-use Google\Auth\Credentials\ServiceAccountCredentials;
-use Google\Cloud\Storage\StorageClient;
 use OCA\FilesGCS\Config;
-use OCA\FilesGCS\Service\AutoclassEnablerService;
+use OCA\FilesGCS\Services\AutoclassService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Files\ObjectStore\Events\BucketCreatedEvent;
 
 class BucketCreatedListener implements IEventListener {
 	public function __construct(
-		private Config $config
-	) {}
+		private Config $config,
+		private AutoclassService $autoclassService,
+	) {
+	}
 
 	public function handle(Event $event): void {
 		if (! $event instanceof BucketCreatedEvent) {
@@ -31,19 +31,6 @@ class BucketCreatedListener implements IEventListener {
 			return;
 		}
 
-		$credentials = json_decode($this->config->getCredentials(), true);
-		$credentialsFetcher = new ServiceAccountCredentials(StorageClient::FULL_CONTROL_SCOPE, $credentials);
-
-		$storage = new StorageClient([
-			'credentialsFetcher' => $credentialsFetcher
-		]);
-
-		$bucket = $storage->bucket($event->getBucket());
-		$bucket->update([
-			'autoclass' => [
-				'enabled' => $this->config->getAutoclassEnabled(),
-				'terminalStorageClass' => strtoupper($this->config->getTerminalStorageClass())
-			]
-		]);
+		$enabled = $this->autoclassService->enable($event->getBucket());
 	}
 }

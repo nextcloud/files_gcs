@@ -10,7 +10,6 @@ namespace OCA\FilesGCS\Controller;
 
 use OCA\FilesGCS\AppInfo\Application;
 use OCA\FilesGCS\Config;
-use OCP\AppFramework\Http\Attribute\ApiRoute;
 use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
@@ -20,7 +19,7 @@ class SettingsController extends OCSController {
 
 	public function __construct(
 		IRequest $request,
-		private Config $config
+		private Config $config,
 	) {
 		parent::__construct(Application::APP_ID, $request);
 	}

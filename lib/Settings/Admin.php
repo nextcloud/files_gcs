@@ -8,12 +8,13 @@ declare (strict_types=1);
 
 namespace OCA\FilesGCS\Settings;
 
-use OCP\Settings\ISettings;
 use OCP\AppFramework\Http\TemplateResponse;
+use OCP\Settings\ISettings;
 use OCP\Util;
 
 class Admin implements ISettings {
-	public function __construct() {}
+	public function __construct() {
+	}
 
 	public function getForm(): TemplateResponse {
 		Util::addScript('files_gcs', 'files_gcs-settings');

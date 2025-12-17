@@ -9,14 +9,13 @@ namespace OCA\FilesGCS\Command;
 
 use OCA\FilesGCS\Config;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class AutoclassDisable extends Command {
 
 	public function __construct(
-		private Config $config
+		private Config $config,
 	) {
 		parent::__construct();
 	}

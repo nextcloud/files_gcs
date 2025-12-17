@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\AppInfo;
 
-use OCA\FilesGCS\AppConfig;
 use OCA\FilesGCS\Listener\BucketCreatedListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
