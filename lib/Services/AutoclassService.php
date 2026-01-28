@@ -11,6 +11,7 @@ namespace OCA\FilesGCS\Services;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Cloud\Storage\StorageClient;
 use OCA\FilesGCS\Config;
+use OCA\FilesGCS\Exceptions\BucketMissingException;
 use Psr\Log\LoggerInterface;
 
 class AutoclassService {
@@ -28,6 +29,10 @@ class AutoclassService {
 		$credentialsFetcher = new ServiceAccountCredentials(StorageClient::FULL_CONTROL_SCOPE, json_decode($credentials, true));
 		$storage = new StorageClient(['credentialsFetcher' => $credentialsFetcher]);
 		$bucket = $storage->bucket($bucketName);
+
+		if (!$bucket->exists()) {
+			throw new BucketMissingException();
+		}
 
 		try {
 			$response = $bucket->update([
