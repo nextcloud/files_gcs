@@ -7,12 +7,12 @@
 	<description>Manage your Google Cloud Storage buckets with support for GCS-specific features like autoclass</description>
 	<version>1.0.0</version>
 	<licence>agpl</licence>
-	<author mail="kent.delante@proton.me" homepage="">Kent Delante</author>
+	<author mail="kent@delante.me">Kent Delante</author>
 	<namespace>FilesGCS</namespace>
 	<category>files</category>
 	<bugs>https://github.com/nextcloud/files_gcs/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="29" max-version="33"/>
+		<nextcloud min-version="29" max-version="29"/>
 	</dependencies>
 
 	<settings>
