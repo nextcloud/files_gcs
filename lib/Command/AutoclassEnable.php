@@ -35,8 +35,10 @@ class AutoclassEnable extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		$this->appConfig->setAutoclassEnabled(true);
-		$output->writeln('New buckets will be created with autoclass enabled');
+		if (!$this->appConfig->getAutoclassEnabled()) {
+			$this->appConfig->setAutoclassEnabled(true);
+			$output->writeln('New buckets will be created with autoclass enabled');
+		}
 
 		if (!($objectstoreName = $input->getOption('object-store'))) {
 			return Command::SUCCESS;
