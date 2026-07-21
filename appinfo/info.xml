@@ -15,15 +15,15 @@
 		<nextcloud min-version="29" max-version="33"/>
 	</dependencies>
 
-	<settings>
-		<admin>OCA\FilesGCS\Settings\Admin</admin>
-		<admin-section>OCA\FilesGCS\Settings\Section</admin-section>
-	</settings>
-
 	<commands>
 		<command>OCA\FilesGCS\Command\CredentialsImport</command>
 		<command>OCA\FilesGCS\Command\AutoclassEnable</command>
 		<command>OCA\FilesGCS\Command\AutoclassDisable</command>
 		<command>OCA\FilesGCS\Command\TerminalStorageClassSet</command>
 	</commands>
+
+	<settings>
+		<admin>OCA\FilesGCS\Settings\Admin</admin>
+		<admin-section>OCA\FilesGCS\Settings\Section</admin-section>
+	</settings>
 </info>
