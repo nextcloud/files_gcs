@@ -12,7 +12,6 @@ use OCA\FilesGCS\AppInfo\Application;
 use OCA\FilesGCS\Config;
 use OCP\AppFramework\Http\Attribute\FrontpageRoute;
 use OCP\AppFramework\Http\DataResponse;
-use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 
 class SettingsController extends OCSController {

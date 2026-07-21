@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Listener;
 
-use OCA\FilesGCS\Config;
 use OCA\FilesGCS\Services\AutoclassService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;

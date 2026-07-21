@@ -8,8 +8,8 @@ declare(strict_types=1);
 namespace OCA\FilesGCS\Command;
 
 use OCA\FilesGCS\Config;
-use OCA\FilesGCS\Services\AutoclassService;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
+use OCA\FilesGCS\Services\AutoclassService;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +30,7 @@ class AutoclassEnable extends Command {
 		$this->setName('files_gcs:autoclass:enable')
 			->setDescription('Enable autoclass for new buckets. If the objectstore and bucket are specified, an '
 							 . ' attempt to enable autoclass for the bucket will be initiated.')
-			->addOption('object-store', 'o', InputOption::VALUE_REQUIRED , 'The name of the objectstore')
+			->addOption('object-store', 'o', InputOption::VALUE_REQUIRED, 'The name of the objectstore')
 			->addOption('bucket', 'b', InputOption::VALUE_REQUIRED, 'The name of the bucket');
 	}
 
