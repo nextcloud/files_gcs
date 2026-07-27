@@ -35,7 +35,7 @@
 		"google/cloud-storage": "^1.48"
 	},
 	"require-dev": {
-		"nextcloud/ocp": "dev-stable30",
+		"nextcloud/ocp": "dev-stable31",
 		"roave/security-advisories": "dev-latest"
 	},
 	"config": {
