@@ -8,8 +8,8 @@ declare(strict_types=1);
 namespace OCA\FilesGCS\Command;
 
 use OCA\FilesGCS\Config;
-use OCA\FilesGCS\Services\AutoclassService;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
+use OCA\FilesGCS\Services\AutoclassService;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,7 +30,7 @@ class AutoclassEnable extends Command {
 		$this->setName('files_gcs:autoclass:enable')
 			->setDescription('Enable autoclass for new buckets. If the objectstore and bucket are specified, an '
 							 . ' attempt to enable autoclass for the bucket will be initiated.')
-			->addOption('object-store', 'o', InputOption::VALUE_REQUIRED , 'The name of the objectstore')
+			->addOption('object-store', 'o', InputOption::VALUE_REQUIRED, 'The name of the objectstore')
 			->addOption('bucket', 'b', InputOption::VALUE_REQUIRED, 'The name of the bucket');
 	}
 
@@ -40,22 +40,29 @@ class AutoclassEnable extends Command {
 			$output->writeln('New buckets will be created with autoclass enabled');
 		}
 
-		if (!($objectstoreName = $input->getOption('object-store'))) {
+		/** @var ?string $objectstoreName */
+		$objectstoreName = $input->getOption('object-store');
+		if ($objectstoreName === null) {
 			return Command::SUCCESS;
 		}
 
+		/** @var ?array $objectstores */
 		$objectstores = $this->config->getSystemValue('objectstore');
 		if (!isset($objectstores[$objectstoreName])) {
 			$output->writeln('<comment>No configuration found for object store ' . $objectstoreName . '</comment>');
 			return Command::SUCCESS;
 		}
 
-		if (!($bucketName = $input->getOption('bucket'))) {
+		/** @var ?string $bucketName */
+		$bucketName = $input->getOption('bucket');
+		if ($bucketName === null) {
 			return Command::SUCCESS;
 		}
 
+		/** @var ?array $objectstore */
 		$objectstore = $objectstores[$objectstoreName];
-		if (strpos($objectstore['arguments']['hostname'], 'storage.googleapis.com') === false) {
+		if (isset($objectstore['arguments']['hostname'])
+			&& strpos($objectstore['arguments']['hostname'], 'storage.googleapis.com') === false) {
 			return Command::SUCCESS;
 		}
 

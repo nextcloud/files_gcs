@@ -43,30 +43,16 @@
                         "type": "string"
                     }
                 }
-            },
-            "Config": {
-                "type": "object",
-                "properties": {
-                    "autoclassEnabled": {
-                        "type": "boolean"
-                    },
-                    "terminalStorageClass": {
-                        "type": "string"
-                    },
-                    "credentialsExist": {
-                        "type": "boolean"
-                    }
-                }
             }
         }
     },
     "paths": {
-        "/ocs/v2.php/apps/files_gcs/config": {
+        "/ocs/v2.php/apps/files_gcs/api": {
             "get": {
-                "operationId": "get-config",
-                "summary": "Get a list of configuration options with their values",
+                "operationId": "api-index",
+                "summary": "An example API endpoint",
                 "tags": [
-                    "config"
+                    "api"
                 ],
                 "security": [
                     {
@@ -112,221 +98,11 @@
                                                 "data": {
                                                     "type": "object",
                                                     "required": [
-                                                        "meta"
+                                                        "message"
                                                     ],
                                                     "properties": {
-                                                        "meta": {
-                                                            "$ref": "#/components/schemas/Config"
-                                                        },
-                                                        "autoclassEnabled": {
-                                                            "type": "boolean"
-                                                        },
-                                                        "terminalStorageClass": {
+                                                        "message": {
                                                             "type": "string"
-                                                        },
-                                                        "credentialsExist": {
-                                                            "type": "boolean"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Current user is not logged in",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "required": [
-                                        "ocs"
-                                    ],
-                                    "properties": {
-                                        "ocs": {
-                                            "type": "object",
-                                            "required": [
-                                                "meta",
-                                                "data"
-                                            ],
-                                            "properties": {
-                                                "meta": {
-                                                    "$ref": "#/components/schemas/OCSMeta"
-                                                },
-                                                "data": {}
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "put": {
-                "operationId": "set-config",
-                "summary": "Set config values for bucket management",
-                "tags": [
-                    "config"
-                ],
-                "security": [
-                    {
-                        "bearer_auth": []
-                    },
-                    {
-                        "basic_auth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "OCS-APIRequest",
-                        "in": "header",
-                        "description": "Required to be true for the API request to pass",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean",
-                            "default": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Configuration successfully saved",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "required": [
-                                        "ocs"
-                                    ],
-                                    "properties": {
-                                        "ocs": {
-                                            "type": "object",
-                                            "required": [
-                                                "meta",
-                                                "data"
-                                            ],
-                                            "properties": {
-                                                "meta": {
-                                                    "$ref": "#/components/schemas/OCSMeta"
-                                                },
-                                                "data": {
-                                                    "type": "object",
-                                                    "required": [
-                                                        "meta"
-                                                    ],
-                                                    "properties": {
-                                                        "meta": {
-                                                            "$ref": "#/components/schemas/Config"
-                                                        },
-                                                        "autoclassEnabled": {
-                                                            "type": "boolean"
-                                                        },
-                                                        "terminalStorageClass": {
-                                                            "type": "string"
-                                                        },
-                                                        "credentialsExist": {
-                                                            "type": "boolean"
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Current user is not logged in",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "required": [
-                                        "ocs"
-                                    ],
-                                    "properties": {
-                                        "ocs": {
-                                            "type": "object",
-                                            "required": [
-                                                "meta",
-                                                "data"
-                                            ],
-                                            "properties": {
-                                                "meta": {
-                                                    "$ref": "#/components/schemas/OCSMeta"
-                                                },
-                                                "data": {}
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/ocs/v2.php/apps/files_gcs/config/credentials": {
-            "post": {
-                "operationId": "config-set-credentials",
-                "summary": "Set credentials to authenticate requests",
-                "tags": [
-                    "config"
-                ],
-                "security": [
-                    {
-                        "bearer_auth": []
-                    },
-                    {
-                        "basic_auth": []
-                    }
-                ],
-                "parameters": [
-                    {
-                        "name": "OCS-APIRequest",
-                        "in": "header",
-                        "description": "Required to be true for the API request to pass",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean",
-                            "default": true
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Configuration successfully saved",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "required": [
-                                        "ocs"
-                                    ],
-                                    "properties": {
-                                        "ocs": {
-                                            "type": "object",
-                                            "required": [
-                                                "meta",
-                                                "data"
-                                            ],
-                                            "properties": {
-                                                "meta": {
-                                                    "$ref": "#/components/schemas/OCSMeta"
-                                                },
-                                                "data": {
-                                                    "type": "object",
-                                                    "required": [
-                                                        "credentialsExist"
-                                                    ],
-                                                    "properties": {
-                                                        "credentialsExist": {
-                                                            "type": "boolean"
                                                         }
                                                     }
                                                 }

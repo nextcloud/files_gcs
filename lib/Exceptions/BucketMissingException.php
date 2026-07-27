@@ -8,4 +8,5 @@ declare(strict_types=1);
  */
 namespace OCA\FilesGCS\Exceptions;
 
-class BucketMissingException extends \Exception {}
+class BucketMissingException extends \Exception {
+}

@@ -8,7 +8,6 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Listener;
 
-use OCA\FilesGCS\Config;
 use OCA\FilesGCS\Services\AutoclassService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
@@ -16,7 +15,6 @@ use OCP\Files\ObjectStore\Events\BucketCreatedEvent;
 
 class BucketCreatedListener implements IEventListener {
 	public function __construct(
-		private Config $config,
 		private AutoclassService $autoclassService,
 	) {
 	}
@@ -31,6 +29,7 @@ class BucketCreatedListener implements IEventListener {
 			return;
 		}
 
-		$enabled = $this->autoclassService->enable($event->getBucket());
+		$bucketName = $event->getBucket();
+		$this->autoclassService->enable($bucketName);
 	}
 }

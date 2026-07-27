@@ -5,20 +5,15 @@
 	<name>Files GCS</name>
 	<summary>Manage buckets in Google Cloud Storage</summary>
 	<description>Manage your Google Cloud Storage buckets with support for GCS-specific features like autoclass</description>
-	<version>2.0.0</version>
+	<version>2.1.0-dev</version>
 	<licence>agpl</licence>
 	<author mail="kent@delante.me">Kent Delante</author>
 	<namespace>FilesGCS</namespace>
 	<category>files</category>
 	<bugs>https://github.com/nextcloud/files_gcs/issues</bugs>
 	<dependencies>
-		<nextcloud min-version="29" max-version="33"/>
+		<nextcloud min-version="30" max-version="30"/>
 	</dependencies>
-
-	<settings>
-		<admin>OCA\FilesGCS\Settings\Admin</admin>
-		<admin-section>OCA\FilesGCS\Settings\Section</admin-section>
-	</settings>
 
 	<commands>
 		<command>OCA\FilesGCS\Command\CredentialsImport</command>
@@ -26,4 +21,9 @@
 		<command>OCA\FilesGCS\Command\AutoclassDisable</command>
 		<command>OCA\FilesGCS\Command\TerminalStorageClassSet</command>
 	</commands>
+
+	<settings>
+		<admin>OCA\FilesGCS\Settings\Admin</admin>
+		<admin-section>OCA\FilesGCS\Settings\Section</admin-section>
+	</settings>
 </info>

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.26.1@d747f6500b38ac4f7dfc5edbcae6e4b637d7add0">
+  <file src="lib/AppInfo/Application.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="lib/Command/AutoclassDisable.php">
+    <UnusedClass>
+      <code><![CDATA[AutoclassDisable]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Command/AutoclassEnable.php">
+    <MixedArgument>
+      <code><![CDATA[$objectstore['arguments']['hostname']]]></code>
+    </MixedArgument>
+    <UnusedClass>
+      <code><![CDATA[AutoclassEnable]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Command/CredentialsImport.php">
+    <UnusedClass>
+      <code><![CDATA[CredentialsImport]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Command/TerminalStorageClassSet.php">
+    <UnusedClass>
+      <code><![CDATA[TerminalStorageClassSet]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Config.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="lib/Controller/ApiController.php">
+    <UnusedClass>
+      <code><![CDATA[ApiController]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Controller/SettingsController.php">
+    <UnusedClass>
+      <code><![CDATA[SettingsController]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Listener/BucketCreatedListener.php">
+    <MissingTemplateParam>
+      <code><![CDATA[IEventListener]]></code>
+    </MissingTemplateParam>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="lib/Services/AutoclassService.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="lib/Settings/Admin.php">
+    <UnusedClass>
+      <code><![CDATA[Admin]]></code>
+    </UnusedClass>
+  </file>
+  <file src="lib/Settings/Section.php">
+    <UnusedClass>
+      <code><![CDATA[Section]]></code>
+    </UnusedClass>
+  </file>
+</files>

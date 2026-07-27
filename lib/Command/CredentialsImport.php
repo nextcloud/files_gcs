@@ -27,7 +27,14 @@ class CredentialsImport extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
+		/** @var ?string $path */
 		$path = $input->getArgument('path');
+
+		if ($path === null) {
+			$output->writeln('No path provided');
+
+			return Command::FAILURE;
+		}
 
 		if (!is_file($path)) {
 			$output->writeln('Path provided doesn\'t exist');
