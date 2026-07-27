@@ -20,7 +20,6 @@ require_once __DIR__ . '/../../vendor/autoload.php';
 class Application extends App implements IBootstrap {
 	public const APP_ID = 'files_gcs';
 
-	/** @psalm-suppress PossiblyUnusedMethod */
 	public function __construct() {
 		parent::__construct(self::APP_ID);
 	}

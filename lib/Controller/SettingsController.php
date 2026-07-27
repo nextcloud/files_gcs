@@ -14,6 +14,7 @@ use OCA\FilesGCS\Config;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\ApiRoute;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\OCSController;
 use OCP\IRequest;
 
 class SettingsController extends OCSController {
@@ -77,6 +78,20 @@ class SettingsController extends OCSController {
 	#[ApiRoute(verb: 'POST', url: '/config/credentials')]
 	public function setCredentials(): DataResponse {
 		$credentials = $this->request->getUploadedFile('credentials');
+		if (!isset($credentials['tmp_name'])) {
+			return new DataResponse([
+				'success' => true,
+				'credentialsExist' => false,
+			]);
+		}
+
+		if (!is_string($credentials['tmp_name'])) {
+			return new DataResponse([
+				'success' => true,
+				'credentialsExist' => false,
+			]);
+		}
+
 		$contents = file_get_contents($credentials['tmp_name']);
 		$this->config->setCredentials($contents);
 

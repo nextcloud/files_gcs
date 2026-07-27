@@ -22,11 +22,13 @@ class AutoclassService {
 	}
 
 	public function enable(string $bucketName, ?string $credentials = null): bool {
-		if (!$credentials) {
+		if ($credentials === null) {
 			$credentials = $this->config->getCredentials();
 		}
 
-		$credentialsFetcher = new ServiceAccountCredentials(StorageClient::FULL_CONTROL_SCOPE, json_decode($credentials, true));
+		/** @var array $decodedCredentials */
+		$decodedCredentials = json_decode($credentials, true);
+		$credentialsFetcher = new ServiceAccountCredentials(StorageClient::FULL_CONTROL_SCOPE, $decodedCredentials);
 		$storage = new StorageClient(['credentialsFetcher' => $credentialsFetcher]);
 		$bucket = $storage->bucket($bucketName);
 

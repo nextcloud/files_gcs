@@ -31,7 +31,14 @@ class TerminalStorageClassSet extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
+		/** @var ?string $storageClass */
 		$storageClass = $input->getArgument('storage');
+
+		if ($storageClass === null) {
+			$output->writeln('No storage class provided. Terminal storage class must be "Nearline" or "Archive"');
+
+			return Command::INVALID;
+		}
 
 		if (strtolower($storageClass) !== 'nearline' && strtolower($storageClass) !== 'archive') {
 			$output->writeln('Invalid storage class. Terminal storage class must be "Nearline" or "Archive"');

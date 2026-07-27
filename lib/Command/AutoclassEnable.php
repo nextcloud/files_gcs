@@ -40,22 +40,29 @@ class AutoclassEnable extends Command {
 			$output->writeln('New buckets will be created with autoclass enabled');
 		}
 
-		if (!($objectstoreName = $input->getOption('object-store'))) {
+		/** @var ?string $objectstoreName */
+		$objectstoreName = $input->getOption('object-store');
+		if ($objectstoreName === null) {
 			return Command::SUCCESS;
 		}
 
+		/** @var ?array $objectstores */
 		$objectstores = $this->config->getSystemValue('objectstore');
 		if (!isset($objectstores[$objectstoreName])) {
 			$output->writeln('<comment>No configuration found for object store ' . $objectstoreName . '</comment>');
 			return Command::SUCCESS;
 		}
 
-		if (!($bucketName = $input->getOption('bucket'))) {
+		/** @var ?string $bucketName */
+		$bucketName = $input->getOption('bucket');
+		if ($bucketName === null) {
 			return Command::SUCCESS;
 		}
 
+		/** @var ?array $objectstore */
 		$objectstore = $objectstores[$objectstoreName];
-		if (strpos($objectstore['arguments']['hostname'], 'storage.googleapis.com') === false) {
+		if (isset($objectstore['arguments']['hostname'])
+			&& strpos($objectstore['arguments']['hostname'], 'storage.googleapis.com') === false) {
 			return Command::SUCCESS;
 		}
 

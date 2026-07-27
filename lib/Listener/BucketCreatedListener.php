@@ -15,7 +15,6 @@ use OCP\Files\ObjectStore\Events\BucketCreatedEvent;
 
 class BucketCreatedListener implements IEventListener {
 	public function __construct(
-		private Config $config,
 		private AutoclassService $autoclassService,
 	) {
 	}
@@ -30,6 +29,7 @@ class BucketCreatedListener implements IEventListener {
 			return;
 		}
 
-		$enabled = $this->autoclassService->enable($event->getBucket());
+		$bucketName = $event->getBucket();
+		$this->autoclassService->enable($bucketName);
 	}
 }
