@@ -3,10 +3,8 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  */
 
-import Vue from 'vue'
+import { createApp } from 'vue'
 import SettingsView from './views/SettingsView.vue'
 
-Vue.mixin({ methods: { t, n } })
-
-const View = Vue.extend(SettingsView)
-new View().$mount('#files-gcs-settings')
+const app = createApp(SettingsView)
+app.mount('#files-gcs-settings')
