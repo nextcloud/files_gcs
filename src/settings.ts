@@ -4,10 +4,9 @@
  */
 
 import Vue from 'vue'
-
-import Settings from './views/Settings.vue'
+import SettingsView from './views/SettingsView.vue'
 
 Vue.mixin({ methods: { t, n } })
 
-const View = Vue.extend(Settings)
+const View = Vue.extend(SettingsView)
 new View().$mount('#files-gcs-settings')

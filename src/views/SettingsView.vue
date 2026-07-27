@@ -3,21 +3,25 @@
    - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
-	<NcSettingsSection class="settings"
+	<NcSettingsSection
+		class="settings"
 		:description="t('files_gcs', 'Manage your Google Cloud Storage buckets')"
 		:name="t('files_gcs', 'Google Cloud Storage')">
-		<NcCheckboxRadioSwitch v-model="autoclassEnabled"
+		<NcCheckboxRadioSwitch
+			v-model="autoclassEnabled"
 			type="switch"
 			@update:modelValue="saveConfig">
 			{{ t('files_gcs', 'Enable autoclass for new buckets') }}
 		</NcCheckboxRadioSwitch>
-		<NcSelect v-model="terminalStorageClass"
+		<NcSelect
+			v-model="terminalStorageClass"
 			:options="storageClasses"
-			:input-label="t('files_gcs', 'Terminal Storage Class')"
+			:inputLabel="t('files_gcs', 'Terminal Storage Class')"
 			:multiple="false"
 			@update:modelValue="saveConfig" />
 		<div class="settings__importer">
-			<input ref="importer"
+			<input
+				ref="importer"
 				type="file"
 				accept="application/json"
 				class="settings__importerInput"
@@ -28,7 +32,8 @@
 				</template>
 				{{ t('files_gcs', credentialsExist ? 'Import new credentials' : 'Import credentials') }}
 			</NcButton>
-			<div v-if="credentialsExist"
+			<div
+				v-if="credentialsExist"
 				class="settings__importerMessage">
 				✓ {{ t('files_gcs', 'Credentials already setup') }}
 			</div>
@@ -39,9 +44,8 @@
 <script setup lang="ts">
 import axios from '@nextcloud/axios'
 import { generateUrl } from '@nextcloud/router'
-import { ref, onMounted } from 'vue'
-
-import { NcButton, NcCheckboxRadioSwitch, NcLoadingIcon, NcSettingsSection, NcSelect } from '@nextcloud/vue'
+import { NcButton, NcCheckboxRadioSwitch, NcLoadingIcon, NcSelect, NcSettingsSection } from '@nextcloud/vue'
+import { onMounted, ref } from 'vue'
 
 const autoclassEnabled = ref(false)
 const terminalStorageClass = ref('Nearline')
@@ -54,11 +58,17 @@ onMounted(() => {
 	loadConfig()
 })
 
+/**
+ * Emulate a click to trigger file upload
+ */
 function importFile() {
 	importer.value.value = null
 	importer.value.click()
 }
 
+/**
+ * Load config from source
+ */
 async function loadConfig() {
 	loading.value = true
 	const { data } = await axios.get(generateUrl('apps/files_gcs/config'))
@@ -68,6 +78,9 @@ async function loadConfig() {
 	loading.value = false
 }
 
+/**
+ * Save the config
+ */
 async function saveConfig() {
 	loading.value = true
 	await axios.put(generateUrl('apps/files_gcs/config'), {
@@ -77,6 +90,11 @@ async function saveConfig() {
 	loading.value = false
 }
 
+/**
+ * Save the credentials
+ *
+ * @param event - A submit event
+ */
 async function saveCredentials(event: Event) {
 	if (!(event.target instanceof HTMLInputElement)) {
 		return
