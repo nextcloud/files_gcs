@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "78cb1b14e1aee90b277e3fb94102ab17",
+    "content-hash": "38695102929375cd56274539f825c00f",
     "packages": [
         {
             "name": "bamarni/composer-bin-plugin",
@@ -1791,16 +1791,16 @@
     "packages-dev": [
         {
             "name": "nextcloud/ocp",
-            "version": "dev-stable31",
+            "version": "dev-stable32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nextcloud-deps/ocp.git",
-                "reference": "d6e67220f98b85890a06527b3e648c443148e14e"
+                "reference": "0f3bbf18846c7bf9e8dea4da2bf045be24be61eb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nextcloud-deps/ocp/zipball/d6e67220f98b85890a06527b3e648c443148e14e",
-                "reference": "d6e67220f98b85890a06527b3e648c443148e14e",
+                "url": "https://api.github.com/repos/nextcloud-deps/ocp/zipball/0f3bbf18846c7bf9e8dea4da2bf045be24be61eb",
+                "reference": "0f3bbf18846c7bf9e8dea4da2bf045be24be61eb",
                 "shasum": ""
             },
             "require": {
@@ -1813,7 +1813,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-stable31": "31.0.0-dev"
+                    "dev-stable32": "32.0.0-dev"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -1833,9 +1833,9 @@
             "description": "Composer package containing Nextcloud's public OCP API and the unstable NCU API",
             "support": {
                 "issues": "https://github.com/nextcloud-deps/ocp/issues",
-                "source": "https://github.com/nextcloud-deps/ocp/tree/stable31"
+                "source": "https://github.com/nextcloud-deps/ocp/tree/stable32"
             },
-            "time": "2026-07-16T01:28:13+00:00"
+            "time": "2026-07-16T01:28:14+00:00"
         },
         {
             "name": "psr/clock",
