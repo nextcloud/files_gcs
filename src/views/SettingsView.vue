@@ -43,7 +43,8 @@
 
 <script setup lang="ts">
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
+import { t } from '@nextcloud/l10n'
+import { generateOcsUrl } from '@nextcloud/router'
 import { NcButton, NcCheckboxRadioSwitch, NcLoadingIcon, NcSelect, NcSettingsSection } from '@nextcloud/vue'
 import { onMounted, ref } from 'vue'
 
