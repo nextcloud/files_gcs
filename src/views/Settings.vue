@@ -38,7 +38,7 @@
 
 <script setup lang="ts">
 import axios from '@nextcloud/axios'
-import { generateUrl } from '@nextcloud/router'
+import { generateOcsUrl } from '@nextcloud/router'
 import { ref, onMounted } from 'vue'
 
 import { NcButton, NcCheckboxRadioSwitch, NcLoadingIcon, NcSettingsSection, NcSelect } from '@nextcloud/vue'
@@ -61,7 +61,7 @@ function importFile() {
 
 async function loadConfig() {
 	loading.value = true
-	const { data } = await axios.get(generateUrl('apps/files_gcs/config'))
+	const { data } = await axios.get(generateOcsUrl('apps/files_gcs/config'))
 	autoclassEnabled.value = data.ocs.data.autoclassEnabled
 	terminalStorageClass.value = data.ocs.data.terminalStorageClass
 	credentialsExist.value = data.ocs.data.credentialsExist
@@ -70,7 +70,7 @@ async function loadConfig() {
 
 async function saveConfig() {
 	loading.value = true
-	await axios.put(generateUrl('apps/files_gcs/config'), {
+	await axios.put(generateOcsUrl('apps/files_gcs/config'), {
 		autoclassEnabled: autoclassEnabled.value,
 		terminalStorageClass: terminalStorageClass.value,
 	})
@@ -87,7 +87,7 @@ async function saveCredentials(event: Event) {
 	const file = event.target.files[0]
 	formData.append('credentials', file)
 
-	await axios.post(generateUrl('apps/files_gcs/config/credentials'), formData)
+	await axios.post(generateOcsUrl('apps/files_gcs/config/credentials'), formData)
 	loading.value = false
 }
 </script>
