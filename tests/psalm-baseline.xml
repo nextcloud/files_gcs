@@ -51,10 +51,45 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
+  <file src="lib/ObjectStoreConfig.php">
+    <MixedArgument>
+      <code><![CDATA[$objectStoreMultiBucket['arguments']['hostname']]]></code>
+      <code><![CDATA[$objectStore['arguments']['hostname']]]></code>
+    </MixedArgument>
+    <MixedInferredReturnType>
+      <code><![CDATA[?string]]></code>
+      <code><![CDATA[?string]]></code>
+      <code><![CDATA[bool]]></code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement>
+      <code><![CDATA[$objectStoreMultiBucket['arguments']['bucket'] ?? null]]></code>
+      <code><![CDATA[$objectStoreMultiBucket['arguments']['bucket'] ?? null]]></code>
+      <code><![CDATA[$objectStore['arguments']['bucket'] ?? null]]></code>
+      <code><![CDATA[$objectStore['arguments']['bucket'] ?? null]]></code>
+      <code><![CDATA[$objectStore['arguments']['bucket'] ?? null]]></code>
+      <code><![CDATA[$objectStore['arguments']['bucket'] ?? null]]></code>
+      <code><![CDATA[$objectStore['arguments']['multibucket'] ?? false]]></code>
+      <code><![CDATA[$objectStore['arguments']['multibucket'] ?? false]]></code>
+    </MixedReturnStatement>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
   <file src="lib/Services/AutoclassService.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
+  </file>
+  <file src="lib/Services/BucketService.php">
+    <PossiblyNullArgument>
+      <code><![CDATA[$prefix]]></code>
+    </PossiblyNullArgument>
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <TooManyTemplateParams>
+      <code><![CDATA[$storageClient->buckets($options)]]></code>
+    </TooManyTemplateParams>
   </file>
   <file src="lib/Settings/Admin.php">
     <UnusedClass>
