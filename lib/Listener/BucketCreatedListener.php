@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Listener;
 
-use OCA\FilesGCS\Services\AutoclassService;
+use OCA\FilesGCS\Service\AutoclassService;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Files\ObjectStore\Events\BucketCreatedEvent;
