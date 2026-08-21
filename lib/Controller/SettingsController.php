@@ -11,6 +11,8 @@ namespace OCA\FilesGCS\Controller;
 
 use OCA\FilesGCS\AppInfo\Application;
 use OCA\FilesGCS\Config;
+use OCA\FilesGCS\Services\AutoclassService;
+use OCA\FilesGCS\Services\BucketService;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\ApiRoute;
 use OCP\AppFramework\Http\DataResponse;
@@ -22,6 +24,8 @@ class SettingsController extends OCSController {
 	public function __construct(
 		IRequest $request,
 		private Config $config,
+		private AutoclassService $autoclassService,
+		private BucketService $bucketService,
 	) {
 		parent::__construct(Application::APP_ID, $request);
 	}
@@ -35,14 +39,11 @@ class SettingsController extends OCSController {
 	 */
 	#[ApiRoute(verb: 'GET', url: '/config')]
 	public function getConfig(): DataResponse {
-		$autoclassEnabled = $this->config->getAutoclassEnabled();
-		$terminalStorageClass = $this->config->getTerminalStorageClass();
-		$credentialsExist = !empty($this->config->getCredentials());
-
 		return new DataResponse([
-			'autoclassEnabled' => $autoclassEnabled,
-			'terminalStorageClass' => $terminalStorageClass,
-			'credentialsExist' => $credentialsExist
+			'autoclassEnabled' => $this->config->getAutoclassEnabled(),
+			'terminalStorageClass' => $this->config->getTerminalStorageClass(),
+			'credentialsExist' => !empty($this->config->getCredentials()),
+			'buckets' => $this->bucketService->getBuckets(),
 		]);
 	}
 
