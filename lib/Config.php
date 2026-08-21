@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS;
 
-use OCP\AppFramework\Services\IAppConfig;
+use OCP\AppFramework\Service\IAppConfig;
 
 class Config {
 	public function __construct(

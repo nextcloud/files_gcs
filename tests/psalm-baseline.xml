@@ -75,12 +75,12 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="lib/Services/AutoclassService.php">
+  <file src="lib/Service/AutoclassService.php">
     <PossiblyUnusedMethod>
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="lib/Services/BucketService.php">
+  <file src="lib/Service/BucketService.php">
     <PossiblyNullArgument>
       <code><![CDATA[$prefix]]></code>
     </PossiblyNullArgument>

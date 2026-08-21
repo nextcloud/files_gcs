@@ -7,7 +7,7 @@
 
 declare(strict_types=1);
 
-namespace OCA\FilesGCS\Services;
+namespace OCA\FilesGCS\Service;
 
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Cloud\Storage\Bucket;
@@ -77,7 +77,6 @@ class BucketService {
 		}
 
 		return $bucketData;
-
 	}
 
 	private function buildStorageClient(): StorageClient {
