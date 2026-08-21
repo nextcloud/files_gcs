@@ -3,42 +3,62 @@
    - SPDX-License-Identifier: AGPL-3.0-or-later
 -->
 <template>
-	<NcSettingsSection
-		class="settings"
-		:description="t('files_gcs', 'Manage your Google Cloud Storage buckets')"
-		:name="t('files_gcs', 'Google Cloud Storage')">
-		<NcCheckboxRadioSwitch
-			v-model="autoclassEnabled"
-			type="switch"
-			@update:modelValue="saveConfig">
-			{{ t('files_gcs', 'Enable autoclass for new buckets') }}
-		</NcCheckboxRadioSwitch>
-		<NcSelect
-			v-model="terminalStorageClass"
-			:options="storageClasses"
-			:inputLabel="t('files_gcs', 'Terminal Storage Class')"
-			:multiple="false"
-			@update:modelValue="saveConfig" />
-		<div class="settings__importer">
-			<input
-				ref="importer"
-				type="file"
-				accept="application/json"
-				class="settings__importerInput"
-				@change="saveCredentials">
-			<NcButton variant="secondary" :disabled="loading" @click="importFile">
-				<template v-if="loading" #icon>
-					<NcLoadingIcon />
-				</template>
-				{{ t('files_gcs', credentialsExist ? 'Import new credentials' : 'Import credentials') }}
-			</NcButton>
-			<div
-				v-if="credentialsExist"
-				class="settings__importerMessage">
-				✓ {{ t('files_gcs', 'Credentials already setup') }}
+	<div class="settings">
+		<NcSettingsSection
+			:description="t('files_gcs', 'Manage your Google Cloud Storage buckets')"
+			:name="t('files_gcs', 'Google Cloud Storage')">
+			<NcCheckboxRadioSwitch
+				v-model="autoclassEnabled"
+				type="switch"
+				@update:modelValue="saveConfig">
+				{{ t('files_gcs', 'Enable autoclass for new buckets') }}
+			</NcCheckboxRadioSwitch>
+			<NcSelect
+				v-model="terminalStorageClass"
+				:options="storageClasses"
+				:inputLabel="t('files_gcs', 'Terminal Storage Class')"
+				:multiple="false"
+				@update:modelValue="saveConfig" />
+			<div class="settings__importer">
+				<input
+					ref="importer"
+					type="file"
+					accept="application/json"
+					class="settings__importerInput"
+					@change="saveCredentials">
+				<NcButton variant="secondary" :disabled="loading" @click="importFile">
+					<template v-if="loading" #icon>
+						<NcLoadingIcon />
+					</template>
+					{{ t('files_gcs', credentialsExist ? 'Import new credentials' : 'Import credentials') }}
+				</NcButton>
+				<div
+					v-if="credentialsExist"
+					class="settings__importerMessage">
+					✓ {{ t('files_gcs', 'Credentials already setup') }}
+				</div>
 			</div>
-		</div>
-	</NcSettingsSection>
+		</NcSettingsSection>
+		<NcSettingsSection
+			:name="t('files_gcs', 'Buckets')">
+			<table class="settings__buckets">
+				<thead>
+					<tr>
+						<th>Bucket</th>
+						<th>Autoclass Enabled</th>
+						<th>Terminal Storage Class</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="bucket, name in buckets" :key="name">
+						<td>{{ name }}</td>
+						<td>{{ bucket?.autoclass?.enabled ? 'Yes' : 'No' }}</td>
+						<td>{{ bucket?.autoclass?.terminalStorageClass }}</td>
+					</tr>
+				</tbody>
+			</table>
+		</NcSettingsSection>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -52,6 +72,7 @@ const autoclassEnabled = ref(false)
 const terminalStorageClass = ref('Nearline')
 const credentialsExist = ref(false)
 const storageClasses = ref(['Nearline', 'Archive'])
+const buckets = ref([])
 const importer = ref(null)
 const loading = ref(false)
 
@@ -76,6 +97,7 @@ async function loadConfig() {
 	autoclassEnabled.value = data.ocs.data.autoclassEnabled
 	terminalStorageClass.value = data.ocs.data.terminalStorageClass
 	credentialsExist.value = data.ocs.data.credentialsExist
+	buckets.value = data.ocs.data.buckets
 	loading.value = false
 }
 
@@ -125,6 +147,21 @@ async function saveCredentials(event: Event) {
 		color: color-mix(in srgb, var(--color-main-text) 60%, transparent);
 		margin-top: 8px;
 		margin-inline-start: 16px;
+	}
+
+	&__buckets {
+		display: block;
+		max-width: 100%;
+
+		thead {
+			font-size: 18px;
+			color: var(--color-text-maxcontrast);
+		}
+
+		td, th {
+			padding: 2px;
+			padding-inline-end: 16px;
+		}
 	}
 }
 </style>
