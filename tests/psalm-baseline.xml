@@ -33,11 +33,6 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="lib/Controller/ApiController.php">
-    <UnusedClass>
-      <code><![CDATA[ApiController]]></code>
-    </UnusedClass>
-  </file>
   <file src="lib/Controller/SettingsController.php">
     <UnusedClass>
       <code><![CDATA[SettingsController]]></code>
