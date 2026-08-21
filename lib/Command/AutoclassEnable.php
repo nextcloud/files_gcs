@@ -10,7 +10,7 @@ namespace OCA\FilesGCS\Command;
 
 use OCA\FilesGCS\Config;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
-use OCA\FilesGCS\Services\AutoclassService;
+use OCA\FilesGCS\Service\AutoclassService;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

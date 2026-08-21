@@ -11,8 +11,8 @@ namespace OCA\FilesGCS\Controller;
 
 use OCA\FilesGCS\AppInfo\Application;
 use OCA\FilesGCS\Config;
-use OCA\FilesGCS\Services\AutoclassService;
-use OCA\FilesGCS\Services\BucketService;
+use OCA\FilesGCS\Service\AutoclassService;
+use OCA\FilesGCS\Service\BucketService;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\ApiRoute;
 use OCP\AppFramework\Http\DataResponse;
