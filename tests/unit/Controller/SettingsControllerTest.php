@@ -113,4 +113,24 @@ final class SettingsControllerTest extends TestCase {
 			'credentialsExist' => false,
 		], $response->getData());
 	}
+
+	public function testSetAutoclassForBucket(): void {
+		$this->bucketService->expects($this->once())
+			->method('setAutoclassForBucket')
+			->with('my-bucket', true)
+			->willReturn(true);
+
+		$response = $this->controller->setAutoclassForBucket('my-bucket', true);
+		$this->assertSame([ 'autoclass' => true ], $response->getData());
+	}
+
+	public function testSetAutoclassForBucketWithEmptyNameFails(): void {
+		$this->bucketService->expects($this->once())
+			->method('setAutoclassForBucket')
+			->with('', true)
+			->willReturn(false);
+
+		$response = $this->controller->setAutoclassForBucket('', true);
+		$this->assertSame([ 'autoclass' => false], $response->getData());
+	}
 }
