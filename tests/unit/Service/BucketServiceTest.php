@@ -13,11 +13,13 @@ use OCA\FilesGCS\Config;
 use OCA\FilesGCS\ObjectStoreConfig;
 use OCA\FilesGCS\Service\BucketService;
 use PHPUnit\Framework\MockObject\MockObject;
+use Psr\Log\LoggerInterface;
 use Test\TestCase;
 
 final class BucketServiceTest extends TestCase {
 	private ObjectStoreConfig&MockObject $objectStoreConfig;
 	private Config&MockObject $config;
+	private LoggerInterface&MockObject $logger;
 
 	private BucketService $service;
 
@@ -26,9 +28,11 @@ final class BucketServiceTest extends TestCase {
 
 		$this->objectStoreConfig = $this->createMock(ObjectSToreConfig::class);
 		$this->config = $this->createMock(Config::class);
+		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->service = new BucketService(
 			$this->objectStoreConfig,
 			$this->config,
+			$this->logger,
 		);
 	}
 
