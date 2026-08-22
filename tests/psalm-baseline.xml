@@ -70,12 +70,13 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="lib/Service/AutoclassService.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="lib/Service/BucketService.php">
+    <MixedInferredReturnType>
+      <code><![CDATA[bool]]></code>
+    </MixedInferredReturnType>
+    <MixedReturnStatement>
+      <code><![CDATA[$response['autoclass']['enabled']]]></code>
+    </MixedReturnStatement>
     <PossiblyNullArgument>
       <code><![CDATA[$prefix]]></code>
     </PossiblyNullArgument>
