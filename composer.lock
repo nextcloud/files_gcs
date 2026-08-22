@@ -321,16 +321,16 @@
         },
         {
             "name": "google/cloud-storage",
-            "version": "v2.5.1",
+            "version": "v2.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/googleapis/google-cloud-php-storage.git",
-                "reference": "95643e1db7846fc6572101611d95bfb746b9fb64"
+                "reference": "1e90d4a1bebd8cef366addce9e57bc4d9ac9c760"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/95643e1db7846fc6572101611d95bfb746b9fb64",
-                "reference": "95643e1db7846fc6572101611d95bfb746b9fb64",
+                "url": "https://api.github.com/repos/googleapis/google-cloud-php-storage/zipball/1e90d4a1bebd8cef366addce9e57bc4d9ac9c760",
+                "reference": "1e90d4a1bebd8cef366addce9e57bc4d9ac9c760",
                 "shasum": ""
             },
             "require": {
@@ -373,9 +373,9 @@
             ],
             "description": "Cloud Storage Client for PHP",
             "support": {
-                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v2.5.1"
+                "source": "https://github.com/googleapis/google-cloud-php-storage/tree/v2.5.2"
             },
-            "time": "2026-08-07T09:39:23+00:00"
+            "time": "2026-08-14T23:32:22+00:00"
         },
         {
             "name": "google/common-protos",
