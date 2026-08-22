@@ -11,7 +11,6 @@ namespace OCA\FilesGCS\Tests\Controller;
 
 use OCA\FilesGCS\Config;
 use OCA\FilesGCS\Controller\SettingsController;
-use OCA\FilesGCS\Service\AutoclassService;
 use OCA\FilesGCS\Service\BucketService;
 use OCP\AppFramework\Http;
 use OCP\IRequest;
@@ -21,7 +20,6 @@ use Test\TestCase;
 final class SettingsControllerTest extends TestCase {
 	private IRequest&MockObject $request;
 	private Config&MockObject $config;
-	private AutoclassService&MockObject $autoclassService;
 	private BucketService&MockObject $bucketService;
 
 	private SettingsController $controller;
@@ -31,13 +29,11 @@ final class SettingsControllerTest extends TestCase {
 
 		$this->request = $this->createMock(IRequest::class);
 		$this->config = $this->createMock(Config::class);
-		$this->autoclassService = $this->createMock(AutoclassService::class);
 		$this->bucketService = $this->createMock(BucketService::class);
 
 		$this->controller = new SettingsController(
 			$this->request,
 			$this->config,
-			$this->autoclassService,
 			$this->bucketService,
 		);
 	}

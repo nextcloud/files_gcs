@@ -10,7 +10,7 @@ namespace OCA\FilesGCS\Command;
 
 use OCA\FilesGCS\Config;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
-use OCA\FilesGCS\Service\AutoclassService;
+use OCA\FilesGCS\Service\BucketService;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,7 +22,7 @@ class AutoclassEnable extends Command {
 	public function __construct(
 		private Config $appConfig,
 		private IConfig $config,
-		private AutoclassService $service,
+		private BucketService $bucketService,
 	) {
 		parent::__construct();
 	}
@@ -67,16 +67,10 @@ class AutoclassEnable extends Command {
 			return Command::SUCCESS;
 		}
 
-		$credentials = $this->appConfig->getCredentials();
-		if (empty($credentials)) {
-			$output->writeln('<comment>Credentials not setup, skipping bucket update</comment>');
-			return Command::SUCCESS;
-		}
-
 		$output->writeln('Enabling autloclass for ' . $bucketName . '...');
 
 		try {
-			$enabled = $this->service->enable($bucketName, $credentials);
+			$enabled = $this->bucketService->setAutoclassForBucket($bucketName, true);
 		} catch (BucketMissingException $exception) {
 			$output->writeln('<comment>Bucket ' . $bucketName . ' does not yet exist. Autoclass will be enabled when it is created</comment>');
 			return Command::SUCCESS;
