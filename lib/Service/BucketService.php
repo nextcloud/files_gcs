@@ -13,12 +13,15 @@ use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
 use OCA\FilesGCS\Config;
+use OCA\FilesGCS\Exceptions\BucketMissingException;
 use OCA\FilesGCS\ObjectStoreConfig;
+use Psr\Log\LoggerInterface;
 
 class BucketService {
 	public function __construct(
 		private ObjectStoreConfig $objectStoreConfig,
 		private Config $config,
+		private LoggerInterface $logger,
 	) {
 	}
 
@@ -84,5 +87,33 @@ class BucketService {
 		$credentials = json_decode($this->config->getCredentials(), true);
 		$credentialsFetcher = new ServiceAccountCredentials(StorageClient::FULL_CONTROL_SCOPE, $credentials);
 		return new StorageClient(['credentialsFetcher' => $credentialsFetcher]);
+	}
+
+	public function setAutoclassForBucket(string $bucketName, bool $enabled): bool {
+		$this->config->setAutoclassEnabled($enabled);
+
+		$client = $this->buildStorageClient();
+		$bucket = $client->bucket($bucketName);
+
+		if (!$bucket->exists()) {
+			throw new BucketMissingException();
+		}
+
+		try {
+			$response = $bucket->update([
+				'autoclass' => [
+					'enabled' => true,
+					'terminalStorageClass' => strtoupper($this->config->getTerminalStorageClass())
+				]
+			]);
+
+			if (isset($response['autoclass']['enabled'])) {
+				return $response['autoclass']['enabled'];
+			}
+		} catch (\Exception $e) {
+			$this->logger->error('Failed to enable autoclass for bucket ' . $bucketName, ['exception' => $e]);
+		}
+
+		return false;
 	}
 }

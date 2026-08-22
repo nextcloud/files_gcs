@@ -11,7 +11,6 @@ namespace OCA\FilesGCS\Controller;
 
 use OCA\FilesGCS\AppInfo\Application;
 use OCA\FilesGCS\Config;
-use OCA\FilesGCS\Service\AutoclassService;
 use OCA\FilesGCS\Service\BucketService;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\ApiRoute;
@@ -24,7 +23,6 @@ class SettingsController extends OCSController {
 	public function __construct(
 		IRequest $request,
 		private Config $config,
-		private AutoclassService $autoclassService,
 		private BucketService $bucketService,
 	) {
 		parent::__construct(Application::APP_ID, $request);
