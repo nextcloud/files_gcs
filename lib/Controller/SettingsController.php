@@ -100,4 +100,20 @@ class SettingsController extends OCSController {
 		]);
 	}
 
+	/**
+	 * Set the autoclass value
+	 *
+	 * @param string $name The name of the bucket
+	 * @param bool $enabled Whether autoclass should be enabled or not
+	 *
+	 * @return DataResponse<Http::STATUS_OK, array<string, bool>, array{}>
+	 *
+	 * 200: Autoclass status returned
+	 */
+	#[ApiRoute(verb: 'POST', url: '/config/autoclass')]
+	public function setAutoclassForBucket(string $name, bool $enabled): DataResponse {
+		return new DataResponse([
+			'autoclass' => $this->bucketService->setAutoclassForBucket($name, $enabled),
+		]);
+	}
 }
