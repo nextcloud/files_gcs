@@ -45,15 +45,25 @@
 				<thead>
 					<tr>
 						<th>Bucket</th>
-						<th>Autoclass Enabled</th>
+						<th>Autoclass Status</th>
 						<th>Terminal Storage Class</th>
 					</tr>
 				</thead>
 				<tbody>
-					<tr v-for="bucket, name in buckets" :key="name">
-						<td>{{ name }}</td>
-						<td>{{ bucket?.autoclass?.enabled ? 'Yes' : 'No' }}</td>
-						<td>{{ bucket?.autoclass?.terminalStorageClass }}</td>
+					<tr v-for="bucket in buckets" :key="bucket.name">
+						<td>{{ bucket.name }}</td>
+						<td>
+							<NcLoadingIcon v-if="loading" />
+							<NcCheckboxRadioSwitch
+								v-else
+								type="switch"
+								:modelValue="bucket.autoclass?.enabled"
+								:disabled="loading"
+								@update:modelValue="toggleAutoclassForBucket(bucket)">
+								{{ bucket.autoclass?.enabled ? 'Enabled' : 'Disabled' }}
+							</NcCheckboxRadioSwitch>
+						</td>
+						<td>{{ bucket.autoclass?.terminalStorageClass }}</td>
 					</tr>
 				</tbody>
 			</table>
@@ -62,11 +72,21 @@
 </template>
 
 <script setup lang="ts">
+import type { Bucket } from '../types/index.ts'
+
 import axios from '@nextcloud/axios'
 import { t } from '@nextcloud/l10n'
 import { generateOcsUrl } from '@nextcloud/router'
-import { NcButton, NcCheckboxRadioSwitch, NcLoadingIcon, NcSelect, NcSettingsSection } from '@nextcloud/vue'
+import {
+	NcButton,
+	NcCheckboxRadioSwitch,
+	NcLoadingIcon,
+	NcSelect,
+	NcSettingsSection,
+	spawnDialog,
+} from '@nextcloud/vue'
 import { onMounted, ref } from 'vue'
+import AutoclassConfirmDialog from '../components/AutoclassConfirmDialog.vue'
 
 const autoclassEnabled = ref(false)
 const terminalStorageClass = ref('Nearline')
@@ -130,6 +150,31 @@ async function saveCredentials(event: Event) {
 
 	await axios.post(generateOcsUrl('apps/files_gcs/config/credentials'), formData)
 	loading.value = false
+}
+
+/**
+ * Set the autoclass status for a bucket
+ *
+ * @param bucket - The bucket to update
+ */
+async function toggleAutoclassForBucket(bucket: Bucket) {
+	const autoclassEnabled = !bucket.autoclass.enabled
+
+	const confirmed = await spawnDialog(
+		AutoclassConfirmDialog,
+		{ autoclassStatus: bucket.autoclass.enabled ? 'disabled' : 'enabled' },
+	)
+
+	if (confirmed) {
+		loading.value = true
+		await axios.post(
+			generateOcsUrl('apps/files_gcs/config/autoclass'),
+			{ name: bucket.name, enabled: autoclassEnabled },
+		)
+
+		await loadConfig()
+		loading.value = false
+	}
 }
 </script>
 
