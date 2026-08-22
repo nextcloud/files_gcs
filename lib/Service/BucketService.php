@@ -63,7 +63,8 @@ class BucketService {
 				}
 
 				$bucketInfo = $bucket->info();
-				$bucketData[$bucketName] = [
+				$bucketData[] = [
+					'name' => $bucketName,
 					'autoclass' => isset($bucketInfo['autoclass'])
 						? $bucketInfo['autoclass']
 						: [
@@ -90,8 +91,6 @@ class BucketService {
 	}
 
 	public function setAutoclassForBucket(string $bucketName, bool $enabled): bool {
-		$this->config->setAutoclassEnabled($enabled);
-
 		$client = $this->buildStorageClient();
 		$bucket = $client->bucket($bucketName);
 
@@ -102,7 +101,7 @@ class BucketService {
 		try {
 			$response = $bucket->update([
 				'autoclass' => [
-					'enabled' => true,
+					'enabled' => $enabled,
 					'terminalStorageClass' => strtoupper($this->config->getTerminalStorageClass())
 				]
 			]);
