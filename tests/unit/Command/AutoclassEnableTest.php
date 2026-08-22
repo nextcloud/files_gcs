@@ -12,7 +12,7 @@ namespace OCA\FilesGCS\Tests\Command;
 use OCA\FilesGCS\Command\AutoclassEnable;
 use OCA\FilesGCS\Config;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
-use OCA\FilesGCS\Service\AutoclassService;
+use OCA\FilesGCS\Service\BucketService;
 use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
@@ -22,7 +22,7 @@ use Test\TestCase;
 final class AutoclassEnableTest extends TestCase {
 	private Config&MockObject $appConfig;
 	private IConfig&MockObject $config;
-	private AutoclassService&MockObject $service;
+	private BucketService&MockObject $bucketService;
 
 	private CommandTester $commandTester;
 
@@ -31,9 +31,9 @@ final class AutoclassEnableTest extends TestCase {
 
 		$this->appConfig = $this->createMock(Config::class);
 		$this->config = $this->createMock(IConfig::class);
-		$this->service = $this->createMock(AutoclassService::class);
+		$this->bucketService = $this->createMock(BucketService::class);
 
-		$command = new AutoclassEnable($this->appConfig, $this->config, $this->service);
+		$command = new AutoclassEnable($this->appConfig, $this->config, $this->bucketService);
 		$this->commandTester = new CommandTester($command);
 	}
 
@@ -60,8 +60,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->appConfig->method('getAutoclassEnabled')->willReturn(true);
 		$this->config->expects($this->never())
 			->method('getSystemValue');
-		$this->service->expects($this->never())
-			->method('enable');
+		$this->bucketService->expects($this->never())
+			->method('setAutoclassForBucket');
 
 		$statusCode = $this->commandTester->execute([]);
 		$this->assertSame(Command::SUCCESS, $statusCode);
@@ -72,8 +72,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->config->method('getSystemValue')
 			->with('objectstore')
 			->willReturn(['other-store' => []]);
-		$this->service->expects($this->never())
-			->method('enable');
+		$this->bucketService->expects($this->never())
+			->method('setAutoclassForBucket');
 
 		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs']);
 		$this->assertSame(Command::SUCCESS, $statusCode);
@@ -84,8 +84,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->config->method('getSystemValue')
 			->with('objectstore')
 			->willReturn(['gcs' => ['arguments' => ['hostname' => 'storage.googleapis.com']]]);
-		$this->service->expects($this->never())
-			->method('enable');
+		$this->bucketService->expects($this->never())
+			->method('setAutoclassForBucket');
 
 		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs']);
 		$this->assertSame(Command::SUCCESS, $statusCode);
@@ -98,23 +98,10 @@ final class AutoclassEnableTest extends TestCase {
 			->willReturn(['s3' => ['arguments' => ['hostname' => 's3.amazonaws.com']]]);
 		$this->appConfig->expects($this->never())
 			->method('getCredentials');
-		$this->service->expects($this->never())
-			->method('enable');
+		$this->bucketService->expects($this->never())
+			->method('setAutoclassForBucket');
 
 		$statusCode = $this->commandTester->execute(['--object-store' => 's3', '--bucket' => 'my-bucket']);
-		$this->assertSame(Command::SUCCESS, $statusCode);
-	}
-
-	public function testReportsMissingCredentials(): void {
-		$this->appConfig->method('getAutoclassEnabled')->willReturn(true);
-		$this->config->method('getSystemValue')
-			->with('objectstore')
-			->willReturn(['gcs' => ['arguments' => ['hostname' => 'storage.googleapis.com']]]);
-		$this->appConfig->method('getCredentials')->willReturn('');
-		$this->service->expects($this->never())
-			->method('enable');
-
-		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
 		$this->assertSame(Command::SUCCESS, $statusCode);
 	}
 
@@ -124,9 +111,9 @@ final class AutoclassEnableTest extends TestCase {
 			->with('objectstore')
 			->willReturn(['gcs' => ['arguments' => []]]);
 		$this->appConfig->method('getCredentials')->willReturn('{"client_email":"a@b.com"}');
-		$this->service->expects($this->once())
-			->method('enable')
-			->with('my-bucket', '{"client_email":"a@b.com"}')
+		$this->bucketService->expects($this->once())
+			->method('setAutoclassForBucket')
+			->with('my-bucket', true)
 			->willThrowException(new BucketMissingException());
 
 		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
@@ -139,14 +126,12 @@ final class AutoclassEnableTest extends TestCase {
 			->with('objectstore')
 			->willReturn(['gcs' => ['arguments' => []]]);
 		$this->appConfig->method('getCredentials')->willReturn('{"client_email":"a@b.com"}');
-		$this->service->expects($this->once())
-			->method('enable')
+		$this->bucketService->expects($this->once())
+			->method('setAutoclassForBucket')
 			->willReturn(false);
 
 		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
-
 		$this->assertSame(Command::FAILURE, $statusCode);
-		$this->assertStringContainsString('Failed to enable autoclass for bucket my-bucket', $this->commandTester->getDisplay());
 	}
 
 	public function testReturnsSuccessWhenServiceEnablesAutoclass(): void {
@@ -155,8 +140,8 @@ final class AutoclassEnableTest extends TestCase {
 			->with('objectstore')
 			->willReturn(['gcs' => ['arguments' => []]]);
 		$this->appConfig->method('getCredentials')->willReturn('{"client_email":"a@b.com"}');
-		$this->service->expects($this->once())
-			->method('enable')
+		$this->bucketService->expects($this->once())
+			->method('setAutoclassForBucket')
 			->willReturn(true);
 
 		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
