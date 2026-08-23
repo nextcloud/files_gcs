@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OCA\FilesGCS\Tests\Command;
 
 use OCA\FilesGCS\Command\CredentialsImport;
-use OCA\FilesGCS\Config;
+use OCP\AppFramework\Services\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +19,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 final class CredentialsImportTest extends TestCase {
-	private Config&MockObject $config;
+	private IAppConfig&MockObject $config;
 
 	private CredentialsImport $command;
 	private CommandTester $commandTester;
@@ -27,7 +27,7 @@ final class CredentialsImportTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock(Config::class);
+		$this->config = $this->createMock(IAppConfig::class);
 
 		$this->command = new CredentialsImport($this->config);
 		$this->commandTester = new CommandTester($this->command);
@@ -35,7 +35,7 @@ final class CredentialsImportTest extends TestCase {
 
 	public function testReportsFailureWhenPathDoesNotExist(): void {
 		$this->config->expects($this->never())
-			->method('setCredentials');
+			->method('setAppValueString');
 
 		$statusCode = $this->commandTester->execute(['path' => '/nonexistent/path/credentials.json']);
 		$this->assertSame(Command::FAILURE, $statusCode);
@@ -43,7 +43,7 @@ final class CredentialsImportTest extends TestCase {
 
 	public function testReportsFailureWhenNoPathIsProvided(): void {
 		$this->config->expects($this->never())
-			->method('setCredentials');
+			->method('setAppValueString');
 
 		$input = $this->createMock(InputInterface::class);
 		$input->method('getArgument')

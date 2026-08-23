@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\AppInfo;
 
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Listener\BucketCreatedListener;
 use OCP\AppFramework\App;
 use OCP\AppFramework\Bootstrap\IBootContext;
@@ -25,6 +26,7 @@ class Application extends App implements IBootstrap {
 	}
 
 	public function register(IRegistrationContext $context): void {
+		$context->registerConfigLexicon(ConfigLexicon::class);
 		$context->registerEventListener(BucketCreatedEvent::class, BucketCreatedListener::class);
 	}
 

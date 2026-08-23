@@ -9,17 +9,18 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Tests\Controller;
 
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Controller\SettingsController;
 use OCA\FilesGCS\Service\BucketService;
 use OCP\AppFramework\Http;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IRequest;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
 final class SettingsControllerTest extends TestCase {
 	private IRequest&MockObject $request;
-	private Config&MockObject $config;
+	private IAppConfig&MockObject $appConfig;
 	private BucketService&MockObject $bucketService;
 
 	private SettingsController $controller;
@@ -28,20 +29,25 @@ final class SettingsControllerTest extends TestCase {
 		parent::setUp();
 
 		$this->request = $this->createMock(IRequest::class);
-		$this->config = $this->createMock(Config::class);
+		$this->appConfig = $this->createMock(IAppConfig::class);
 		$this->bucketService = $this->createMock(BucketService::class);
 
 		$this->controller = new SettingsController(
 			$this->request,
-			$this->config,
+			$this->appConfig,
 			$this->bucketService,
 		);
 	}
 
 	public function testGetConfigReflectsCurrentState(): void {
-		$this->config->method('getAutoclassEnabled')->willReturn(true);
-		$this->config->method('getTerminalStorageClass')->willReturn('Archive');
-		$this->config->method('getCredentials')->willReturn('{"client_email":"a@b.com"}');
+		$this->appConfig->method('getAppValueBool')->with(ConfigLexicon::AUTOCLASS_ENABLED)->willReturn(true);
+		$this->appConfig->expects($this->exactly(2))
+			->method('getAppValueString')
+			->willReturnCallback(fn (string $config) => match ($config) {
+				ConfigLexicon::TERMINAL_STORAGE_CLASS => 'Archive',
+				ConfigLexicon::CREDENTIALS => '{"client_email":"a@b.com"}',
+				default => '',
+			});
 		$this->bucketService->method('getBuckets')->willReturn(['my-bucket' => ['autoclass' => ['enabled' => true]]]);
 
 		$response = $this->controller->getConfig();
@@ -56,9 +62,14 @@ final class SettingsControllerTest extends TestCase {
 	}
 
 	public function testGetConfigReportsNoCredentialsWhenEmpty(): void {
-		$this->config->method('getAutoclassEnabled')->willReturn(false);
-		$this->config->method('getTerminalStorageClass')->willReturn('Nearline');
-		$this->config->method('getCredentials')->willReturn('');
+		$this->appConfig->method('getAppValueBool')->with(ConfigLexicon::AUTOCLASS_ENABLED)->willReturn(false);
+		$this->appConfig->expects($this->exactly(2))
+			->method('getAppValueString')
+			->willReturnCallback(fn (string $config) => match ($config) {
+				ConfigLexicon::TERMINAL_STORAGE_CLASS => 'Nearline',
+				ConfigLexicon::CREDENTIALS => '',
+				default => '',
+			});
 		$this->bucketService->method('getBuckets')->willReturn([]);
 
 		$response = $this->controller->getConfig();
@@ -67,12 +78,12 @@ final class SettingsControllerTest extends TestCase {
 	}
 
 	public function testSetConfigPersistsAndReturnsValues(): void {
-		$this->config->expects($this->once())
-			->method('setAutoclassEnabled')
-			->with(true);
-		$this->config->expects($this->once())
-			->method('setTerminalStorageClass')
-			->with('Archive');
+		$this->appConfig->expects($this->once())
+			->method('setAppValueBool')
+			->with(ConfigLexicon::AUTOCLASS_ENABLED, true);
+		$this->appConfig->expects($this->once())
+			->method('setAppValueString')
+			->with(ConfigLexicon::TERMINAL_STORAGE_CLASS, 'Archive');
 
 		$response = $this->controller->setConfig(true, 'Archive');
 
@@ -88,8 +99,8 @@ final class SettingsControllerTest extends TestCase {
 		$this->request->method('getUploadedFile')
 			->with('credentials')
 			->willReturn(null);
-		$this->config->expects($this->never())
-			->method('setCredentials');
+		$this->appConfig->expects($this->never())
+			->method('setAppValueString');
 
 		$response = $this->controller->setCredentials();
 
@@ -103,8 +114,8 @@ final class SettingsControllerTest extends TestCase {
 		$this->request->method('getUploadedFile')
 			->with('credentials')
 			->willReturn(['tmp_name' => ['unexpected', 'array']]);
-		$this->config->expects($this->never())
-			->method('setCredentials');
+		$this->appConfig->expects($this->never())
+			->method('setAppValueString');
 
 		$response = $this->controller->setCredentials();
 

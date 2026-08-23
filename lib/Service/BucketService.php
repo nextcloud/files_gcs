@@ -12,15 +12,16 @@ namespace OCA\FilesGCS\Service;
 use Google\Auth\Credentials\ServiceAccountCredentials;
 use Google\Cloud\Storage\Bucket;
 use Google\Cloud\Storage\StorageClient;
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
 use OCA\FilesGCS\ObjectStoreConfig;
+use OCP\AppFramework\Services\IAppConfig;
 use Psr\Log\LoggerInterface;
 
 class BucketService {
 	public function __construct(
 		private ObjectStoreConfig $objectStoreConfig,
-		private Config $config,
+		private IAppConfig $appConfig,
 		private LoggerInterface $logger,
 	) {
 	}
@@ -85,7 +86,7 @@ class BucketService {
 
 	private function buildStorageClient(): StorageClient {
 		/** @var array<array-key, mixed> $credentials */
-		$credentials = json_decode($this->config->getCredentials(), true);
+		$credentials = json_decode($this->appConfig->getAppValueString(ConfigLexicon::CREDENTIALS), true);
 		$credentialsFetcher = new ServiceAccountCredentials(StorageClient::FULL_CONTROL_SCOPE, $credentials);
 		return new StorageClient(['credentialsFetcher' => $credentialsFetcher]);
 	}
@@ -102,7 +103,7 @@ class BucketService {
 			$response = $bucket->update([
 				'autoclass' => [
 					'enabled' => $enabled,
-					'terminalStorageClass' => strtoupper($this->config->getTerminalStorageClass())
+					'terminalStorageClass' => strtoupper($this->appConfig->getAppValueString(ConfigLexicon::TERMINAL_STORAGE_CLASS))
 				]
 			]);
 

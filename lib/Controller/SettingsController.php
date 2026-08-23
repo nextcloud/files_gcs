@@ -10,19 +10,20 @@ declare(strict_types=1);
 namespace OCA\FilesGCS\Controller;
 
 use OCA\FilesGCS\AppInfo\Application;
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Service\BucketService;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\Attribute\ApiRoute;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\OCSController;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IRequest;
 
 class SettingsController extends OCSController {
 
 	public function __construct(
 		IRequest $request,
-		private Config $config,
+		private IAppConfig $appConfig,
 		private BucketService $bucketService,
 	) {
 		parent::__construct(Application::APP_ID, $request);
@@ -38,9 +39,9 @@ class SettingsController extends OCSController {
 	#[ApiRoute(verb: 'GET', url: '/config')]
 	public function getConfig(): DataResponse {
 		return new DataResponse([
-			'autoclassEnabled' => $this->config->getAutoclassEnabled(),
-			'terminalStorageClass' => $this->config->getTerminalStorageClass(),
-			'credentialsExist' => !empty($this->config->getCredentials()),
+			'autoclassEnabled' => $this->appConfig->getAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED),
+			'terminalStorageClass' => $this->appConfig->getAppValueString(ConfigLexicon::TERMINAL_STORAGE_CLASS),
+			'credentialsExist' => !empty($this->appConfig->getAppValueString(ConfigLexicon::CREDENTIALS)),
 			'buckets' => $this->bucketService->getBuckets(),
 		]);
 	}
@@ -57,8 +58,8 @@ class SettingsController extends OCSController {
 	 */
 	#[ApiRoute(verb: 'PUT', url: '/config')]
 	public function setConfig(bool $autoclassEnabled, string $terminalStorageClass): DataResponse {
-		$this->config->setAutoclassEnabled($autoclassEnabled);
-		$this->config->setTerminalStorageClass($terminalStorageClass);
+		$this->appConfig->setAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED, $autoclassEnabled);
+		$this->appConfig->setAppValueString(ConfigLexicon::TERMINAL_STORAGE_CLASS, $terminalStorageClass);
 
 		return new DataResponse([
 			'success' => true,
@@ -92,7 +93,7 @@ class SettingsController extends OCSController {
 		}
 
 		$contents = file_get_contents($credentials['tmp_name']);
-		$this->config->setCredentials($contents);
+		$this->appConfig->setAppValueString(ConfigLexicon::CREDENTIALS, $contents);
 
 		return new DataResponse([
 			'success' => true,

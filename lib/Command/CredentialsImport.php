@@ -8,7 +8,8 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Command;
 
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
+use OCP\AppFramework\Services\IAppConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CredentialsImport extends Command {
 	public function __construct(
-		private Config $config,
+		private IAppConfig $appConfig,
 	) {
 		parent::__construct();
 	}
@@ -44,8 +45,7 @@ class CredentialsImport extends Command {
 		}
 
 		$credentials = file_get_contents($path);
-		$this->config->setCredentials($credentials);
-
+		$this->appConfig->setAppValueString(ConfigLexicon::CREDENTIALS, $credentials);
 		$output->writeln('Successfully imported credentials');
 
 		return Command::SUCCESS;
