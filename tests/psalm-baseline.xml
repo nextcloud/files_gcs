@@ -28,11 +28,6 @@
       <code><![CDATA[TerminalStorageClassSet]]></code>
     </UnusedClass>
   </file>
-  <file src="lib/Config.php">
-    <PossiblyUnusedMethod>
-      <code><![CDATA[__construct]]></code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="lib/Controller/SettingsController.php">
     <UnusedClass>
       <code><![CDATA[SettingsController]]></code>

@@ -8,9 +8,10 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Command;
 
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
 use OCA\FilesGCS\Service\BucketService;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\IConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -20,7 +21,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AutoclassEnable extends Command {
 
 	public function __construct(
-		private Config $appConfig,
+		private IAppConfig $appConfig,
 		private IConfig $config,
 		private BucketService $bucketService,
 	) {
@@ -36,8 +37,8 @@ class AutoclassEnable extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		if (!$this->appConfig->getAutoclassEnabled()) {
-			$this->appConfig->setAutoclassEnabled(true);
+		if (!$this->appConfig->getAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED)) {
+			$this->appConfig->setAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED, true);
 			$output->writeln('New buckets will be created with autoclass enabled');
 		}
 

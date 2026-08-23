@@ -10,7 +10,8 @@ declare(strict_types=1);
 namespace OCA\FilesGCS\Tests\Command;
 
 use OCA\FilesGCS\Command\TerminalStorageClassSet;
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
+use OCP\AppFramework\Services\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -19,7 +20,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
 final class TerminalStorageClassSetTest extends TestCase {
-	private Config&MockObject $config;
+	private IAppConfig&MockObject $appConfig;
 
 	private TerminalStorageClassSet $command;
 	private CommandTester $commandTester;
@@ -27,41 +28,41 @@ final class TerminalStorageClassSetTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->config = $this->createMock(Config::class);
+		$this->appConfig = $this->createMock(IAppConfig::class);
 
-		$this->command = new TerminalStorageClassSet($this->config);
+		$this->command = new TerminalStorageClassSet($this->appConfig);
 		$this->commandTester = new CommandTester($this->command);
 	}
 
 	public function testSetsNearlineStorageClass(): void {
-		$this->config->expects($this->once())
-			->method('setTerminalStorageClass')
-			->with('Nearline');
+		$this->appConfig->expects($this->once())
+			->method('setAppValueString')
+			->with(ConfigLexicon::TERMINAL_STORAGE_CLASS, 'Nearline');
 
 		$statusCode = $this->commandTester->execute(['storage' => 'Nearline']);
 		$this->assertSame(Command::SUCCESS, $statusCode);
 	}
 
 	public function testAcceptsArchiveCaseInsensitivelyAndPreservesGivenCasing(): void {
-		$this->config->expects($this->once())
-			->method('setTerminalStorageClass')
-			->with('ARCHIVE');
+		$this->appConfig->expects($this->once())
+			->method('setAppValueString')
+			->with(ConfigLexicon::TERMINAL_STORAGE_CLASS, 'ARCHIVE');
 
 		$statusCode = $this->commandTester->execute(['storage' => 'ARCHIVE']);
 		$this->assertSame(Command::SUCCESS, $statusCode);
 	}
 
 	public function testRejectsUnsupportedStorageClass(): void {
-		$this->config->expects($this->never())
-			->method('setTerminalStorageClass');
+		$this->appConfig->expects($this->never())
+			->method('setAppValueString');
 
 		$statusCode = $this->commandTester->execute(['storage' => 'Coldline']);
 		$this->assertSame(Command::INVALID, $statusCode);
 	}
 
 	public function testReportsFailureWhenNoStorageClassIsProvided(): void {
-		$this->config->expects($this->never())
-			->method('setTerminalStorageClass');
+		$this->appConfig->expects($this->never())
+			->method('setAppValueString');
 
 		$input = $this->createMock(InputInterface::class);
 		$input->method('getArgument')

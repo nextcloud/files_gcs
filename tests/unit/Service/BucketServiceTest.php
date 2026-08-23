@@ -9,16 +9,17 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Tests\Service;
 
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\ObjectStoreConfig;
 use OCA\FilesGCS\Service\BucketService;
+use OCP\AppFramework\Services\IAppConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use Psr\Log\LoggerInterface;
 use Test\TestCase;
 
 final class BucketServiceTest extends TestCase {
 	private ObjectStoreConfig&MockObject $objectStoreConfig;
-	private Config&MockObject $config;
+	private IAppConfig&MockObject $appConfig;
 	private LoggerInterface&MockObject $logger;
 
 	private BucketService $service;
@@ -26,12 +27,12 @@ final class BucketServiceTest extends TestCase {
 	public function setUp(): void {
 		parent::setUp();
 
-		$this->objectStoreConfig = $this->createMock(ObjectSToreConfig::class);
-		$this->config = $this->createMock(Config::class);
+		$this->objectStoreConfig = $this->createMock(ObjectStoreConfig::class);
+		$this->appConfig = $this->createMock(IAppConfig::class);
 		$this->logger = $this->createMock(LoggerInterface::class);
 		$this->service = new BucketService(
 			$this->objectStoreConfig,
-			$this->config,
+			$this->appConfig,
 			$this->logger,
 		);
 	}
@@ -81,12 +82,12 @@ final class BucketServiceTest extends TestCase {
 			->willReturn(false);
 		$this->objectStoreConfig->expects($this->never())
 			->method('getMultiBucketPrefix');
-		$this->config->expects($this->once())
-			->method('getCredentials')
+		$this->appConfig->expects($this->once())
+			->method('getAppValueString')
+			->with(ConfigLexicon::CREDENTIALS)
 			->willReturn('');
 
 		$this->expectException(\Throwable::class);
-
 		$this->service->getBuckets();
 	}
 
@@ -97,13 +98,13 @@ final class BucketServiceTest extends TestCase {
 			->willReturn('my-bucket');
 		$this->objectStoreConfig->method('hasMultipleObjectStorages')
 			->willReturn(false);
-		$this->config->expects($this->once())
-			->method('getCredentials')
+		$this->appConfig->expects($this->once())
+			->method('getAppValueString')
+			->with(ConfigLexicon::CREDENTIALS)
 			->willReturn(json_encode(['client_email' => 'a@b.com']));
 
 		$this->expectException(\InvalidArgumentException::class);
 		$this->expectExceptionMessage('private_key');
-
 		$this->service->getBuckets();
 	}
 
@@ -118,13 +119,13 @@ final class BucketServiceTest extends TestCase {
 		$this->objectStoreConfig->expects($this->once())
 			->method('getMultiBucketPrefix')
 			->willReturn('my-bucket-');
-		$this->config->expects($this->once())
-			->method('getCredentials')
+		$this->appConfig->expects($this->once())
+			->method('getAppValueString')
+			->with(ConfigLexicon::CREDENTIALS)
 			->willReturn(json_encode(['client_email' => 'a@b.com']));
 
 		$this->expectException(\InvalidArgumentException::class);
 		$this->expectExceptionMessage('private_key');
-
 		$this->service->getBuckets();
 	}
 }

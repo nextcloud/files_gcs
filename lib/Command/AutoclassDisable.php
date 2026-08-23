@@ -8,7 +8,8 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Command;
 
-use OCA\FilesGCS\Config;
+use OCA\FilesGCS\ConfigLexicon;
+use OCP\AppFramework\Services\IAppConfig;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,7 +17,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AutoclassDisable extends Command {
 
 	public function __construct(
-		private Config $config,
+		private IAppConfig $appConfig,
 	) {
 		parent::__construct();
 	}
@@ -27,7 +28,7 @@ class AutoclassDisable extends Command {
 	}
 
 	protected function execute(InputInterface $input, OutputInterface $output): int {
-		$this->config->setAutoclassEnabled(false);
+		$this->appConfig->setAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED, false);
 		$output->writeln('Autoclass disabled');
 
 		return Command::SUCCESS;
