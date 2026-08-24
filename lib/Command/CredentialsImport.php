@@ -22,12 +22,14 @@ class CredentialsImport extends Command {
 		parent::__construct();
 	}
 
+	#[\Override]
 	protected function configure(): void {
 		$this->setName('files_gcs:credentials:import')
 			->setDescription('Import Google service account credentials')
 			->addArgument('path', InputArgument::REQUIRED, 'Path to the credentials file');
 	}
 
+	#[\Override]
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		/** @var ?string $path */
 		$path = $input->getArgument('path');
@@ -45,6 +47,11 @@ class CredentialsImport extends Command {
 		}
 
 		$credentials = file_get_contents($path);
+		if ($credentials === false) {
+			$output->writeln('Failed to import credentials');
+			return Command::FAILURE;
+		}
+
 		$this->appConfig->setAppValueString(ConfigLexicon::CREDENTIALS, $credentials);
 		$output->writeln('Successfully imported credentials');
 

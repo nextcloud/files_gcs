@@ -93,6 +93,13 @@ class SettingsController extends OCSController {
 		}
 
 		$contents = file_get_contents($credentials['tmp_name']);
+		if ($contents === false) {
+			return new DataResponse([
+				'success' => false,
+				'credentialsExist' => false
+			]);
+		}
+
 		$this->appConfig->setAppValueString(ConfigLexicon::CREDENTIALS, $contents);
 
 		return new DataResponse([

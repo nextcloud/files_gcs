@@ -46,11 +46,6 @@
       <code><![CDATA[$objectStoreMultiBucket['arguments']['hostname']]]></code>
       <code><![CDATA[$objectStore['arguments']['hostname']]]></code>
     </MixedArgument>
-    <MixedInferredReturnType>
-      <code><![CDATA[?string]]></code>
-      <code><![CDATA[?string]]></code>
-      <code><![CDATA[bool]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$objectStoreMultiBucket['arguments']['bucket'] ?? null]]></code>
       <code><![CDATA[$objectStoreMultiBucket['arguments']['bucket'] ?? null]]></code>
@@ -66,9 +61,6 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="lib/Service/BucketService.php">
-    <MixedInferredReturnType>
-      <code><![CDATA[bool]]></code>
-    </MixedInferredReturnType>
     <MixedReturnStatement>
       <code><![CDATA[$response['autoclass']['enabled']]]></code>
     </MixedReturnStatement>

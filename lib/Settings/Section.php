@@ -19,18 +19,22 @@ class Section implements IIconSection {
 	) {
 	}
 
+	#[\Override]
 	public function getID(): string {
 		return 'files_gcs';
 	}
 
+	#[\Override]
 	public function getName(): string {
 		return $this->l10n->t('Google Cloud Storage');
 	}
 
+	#[\Override]
 	public function getPriority(): int {
 		return 50;
 	}
 
+	#[\Override]
 	public function getIcon(): string {
 		return $this->url->imagePath('files_gcs', 'app-dark.svg');
 	}

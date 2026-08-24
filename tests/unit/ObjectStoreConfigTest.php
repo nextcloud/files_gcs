@@ -14,7 +14,7 @@ use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
 use Test\TestCase;
 
-final class ObjectStoreConfigTest extends TestCase {
+class ObjectStoreConfigTest extends TestCase {
 	private IConfig&MockObject $config;
 
 	private ObjectStoreConfig $objectStoreConfig;

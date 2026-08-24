@@ -28,6 +28,7 @@ class AutoclassEnable extends Command {
 		parent::__construct();
 	}
 
+	#[\Override]
 	protected function configure(): void {
 		$this->setName('files_gcs:autoclass:enable')
 			->setDescription('Enable autoclass for new buckets. If the objectstore and bucket are specified, an '
@@ -36,6 +37,7 @@ class AutoclassEnable extends Command {
 			->addOption('bucket', 'b', InputOption::VALUE_REQUIRED, 'The name of the bucket');
 	}
 
+	#[\Override]
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		if (!$this->appConfig->getAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED)) {
 			$this->appConfig->setAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED, true);

@@ -19,4 +19,7 @@
 	<extraFiles>
 		<directory name="vendor"/>
 	</extraFiles>
+	<issueHandlers>
+		<ClassMustBeFinal errorLevel="suppress" />
+	</issueHandlers>
 </psalm>

@@ -15,9 +15,9 @@ use OCP\Config\Lexicon\Strictness;
 use OCP\Config\ValueType;
 
 class ConfigLexicon implements ILexicon {
-	public const AUTOCLASS_ENABLED = 'autoclass_enabled';
-	public const TERMINAL_STORAGE_CLASS = 'terminal_storage_class';
-	public const CREDENTIALS = 'credentials';
+	public const string AUTOCLASS_ENABLED = 'autoclass_enabled';
+	public const string TERMINAL_STORAGE_CLASS = 'terminal_storage_class';
+	public const string CREDENTIALS = 'credentials';
 
 	#[\Override]
 	public function getStrictness(): Strictness {
