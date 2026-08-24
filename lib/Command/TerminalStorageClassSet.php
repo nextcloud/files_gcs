@@ -22,6 +22,7 @@ class TerminalStorageClassSet extends Command {
 		parent::__construct();
 	}
 
+	#[\Override]
 	protected function configure(): void {
 		$this->setName('files_gcs:terminal_storage_class:set')
 			->setDescription('Set the terminal storage class for new buckets. Defaults to Nearline')
@@ -32,6 +33,7 @@ class TerminalStorageClassSet extends Command {
 			);
 	}
 
+	#[\Override]
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		/** @var ?string $storageClass */
 		$storageClass = $input->getArgument('storage');

@@ -19,17 +19,19 @@ use OCP\Files\ObjectStore\Events\BucketCreatedEvent;
 require_once __DIR__ . '/../../vendor/autoload.php';
 
 class Application extends App implements IBootstrap {
-	public const APP_ID = 'files_gcs';
+	public const string APP_ID = 'files_gcs';
 
 	public function __construct() {
 		parent::__construct(self::APP_ID);
 	}
 
+	#[\Override]
 	public function register(IRegistrationContext $context): void {
 		$context->registerConfigLexicon(ConfigLexicon::class);
 		$context->registerEventListener(BucketCreatedEvent::class, BucketCreatedListener::class);
 	}
 
+	#[\Override]
 	public function boot(IBootContext $context): void {
 	}
 }

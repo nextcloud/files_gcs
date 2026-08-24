@@ -22,11 +22,13 @@ class AutoclassDisable extends Command {
 		parent::__construct();
 	}
 
+	#[\Override]
 	protected function configure(): void {
 		$this->setName('files_gcs:autoclass:disable')
 			->setDescription('Disable autoclass for new buckets');
 	}
 
+	#[\Override]
 	protected function execute(InputInterface $input, OutputInterface $output): int {
 		$this->appConfig->setAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED, false);
 		$output->writeln('Autoclass disabled');

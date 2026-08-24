@@ -16,15 +16,18 @@ class Admin implements ISettings {
 	public function __construct() {
 	}
 
+	#[\Override]
 	public function getForm(): TemplateResponse {
 		Util::addScript('files_gcs', 'files_gcs-settings');
 		return new TemplateResponse('files_gcs', 'settings/admin');
 	}
 
+	#[\Override]
 	public function getSection(): string {
 		return 'files_gcs';
 	}
 
+	#[\Override]
 	public function getPriority(): int {
 		return 0;
 	}
