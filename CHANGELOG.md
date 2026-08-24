@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - chore: Support Nextcloud 33
+- chore: bump v5.0.0-dev.00
 
 ## v4.1.0
 ### Added
@@ -34,6 +35,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - build: setup krankerl by @leftybournes in https://github.com/nextcloud/files_gcs/pull/72
 - fix: correct ocs url by @leftybournes in https://github.com/nextcloud/files_gcs/pull/77
 - chore(release): v4.0.0 by @leftybournes in https://github.com/nextcloud/files_gcs/pull/82
+
+## v3.1.0
+### Added
+- [stable31] Feat/show buckets by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/86
+- [stable31] Tests/services by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/89
+- [stable31] refactor: move AutoclassService logic to BucketService by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/92
+- [stable31] feat: allow setting autoclass for detected buckets by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/96
+- [stable31] chore: fix wrong year in license header by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/99
+- chore(release): v3.1.0 by @leftybournes in https://github.com/nextcloud/files_gcs/pull/103
 
 ## v3.0.0
 ### Added
@@ -66,6 +76,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [stable31] build: setup krankerl by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/73
 - [stable31] fix: correct ocs url by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/79
 
+
+## v2.2.0
+### Added
+- [stable30] Feat/show buckets by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/85
+- [stable30] Tests/services by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/88
+- [stable30] refactor: move AutoclassService logic to BucketService by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/93
+- [stable30] feat: allow setting autoclass for detected buckets by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/95
+- [stable30] chore: fix wrong year in license header by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/98
+- [stable30] Fix npm audit by @nextcloud-command in https://github.com/nextcloud/files_gcs/pull/100
+- chore(release): v2.2.0 by @leftybournes in https://github.com/nextcloud/files_gcs/pull/104
 
 ## v2.1.0
 ### Added
