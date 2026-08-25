@@ -31,6 +31,10 @@ class BucketCreatedListener implements IEventListener {
 			return;
 		}
 
+		if (!$this->config->getAutoclassEnabled()) {
+			return;
+		}
+
 		$enabled = $this->autoclassService->enable($event->getBucket());
 	}
 }
