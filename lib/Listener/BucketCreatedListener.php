@@ -8,14 +8,17 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Listener;
 
+use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Service\BucketService;
+use OCP\AppFramework\Services\IAppConfig;
 use OCP\EventDispatcher\Event;
 use OCP\EventDispatcher\IEventListener;
 use OCP\Files\ObjectStore\Events\BucketCreatedEvent;
 
 class BucketCreatedListener implements IEventListener {
 	public function __construct(
-		private BucketService $bucketService,
+		private readonly BucketService $bucketService,
+		private readonly IAppConfig $appConfig,
 	) {
 	}
 
@@ -26,6 +29,10 @@ class BucketCreatedListener implements IEventListener {
 
 		$endpoint = $event->getEndpoint();
 		if (strpos($endpoint, 'storage.googleapis.com') === false) {
+			return;
+		}
+
+		if (!$this->appConfig->getAppValueBool(ConfigLexicon::AUTOCLASS_ENABLED, false)) {
 			return;
 		}
 
