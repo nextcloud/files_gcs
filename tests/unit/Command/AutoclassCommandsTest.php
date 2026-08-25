@@ -9,23 +9,24 @@ declare(strict_types=1);
 
 namespace OCA\FilesGCS\Tests\Command;
 
-use OCA\FilesGCS\Command\AutoclassEnable;
+use OCA\FilesGCS\Command\AutoclassCommands;
 use OCA\FilesGCS\ConfigLexicon;
 use OCA\FilesGCS\Exceptions\BucketMissingException;
 use OCA\FilesGCS\Service\BucketService;
 use OCP\AppFramework\Services\IAppConfig;
+use OCP\Console\ExitCode;
+use OCP\Console\IOutput;
 use OCP\IConfig;
 use PHPUnit\Framework\MockObject\MockObject;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Tester\CommandTester;
 use Test\TestCase;
 
-final class AutoclassEnableTest extends TestCase {
+final class AutoclassCommandsTest extends TestCase {
 	private IAppConfig&MockObject $appConfig;
 	private IConfig&MockObject $config;
 	private BucketService&MockObject $bucketService;
+	private IOutput&MockObject $output;
 
-	private CommandTester $commandTester;
+	private AutoclassCommands $command;
 
 	public function setUp(): void {
 		parent::setUp();
@@ -33,9 +34,9 @@ final class AutoclassEnableTest extends TestCase {
 		$this->appConfig = $this->createMock(IAppConfig::class);
 		$this->config = $this->createMock(IConfig::class);
 		$this->bucketService = $this->createMock(BucketService::class);
+		$this->output = $this->createMock(IOutput::class);
 
-		$command = new AutoclassEnable($this->appConfig, $this->config, $this->bucketService);
-		$this->commandTester = new CommandTester($command);
+		$this->command = new AutoclassCommands($this->appConfig, $this->config, $this->bucketService);
 	}
 
 	public function testEnablesAutoclassWhenCurrentlyDisabled(): void {
@@ -44,8 +45,8 @@ final class AutoclassEnableTest extends TestCase {
 			->method('setAppValueBool')
 			->with(ConfigLexicon::AUTOCLASS_ENABLED, true);
 
-		$statusCode = $this->commandTester->execute([]);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output);
+		$this->assertSame(ExitCode::Success, $statusCode);
 	}
 
 	public function testDoesNotReenableAutoclassWhenAlreadyEnabled(): void {
@@ -53,8 +54,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->appConfig->expects($this->never())
 			->method('setAppValueBool');
 
-		$statusCode = $this->commandTester->execute([]);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output);
+		$this->assertSame(ExitCode::Success, $statusCode);
 	}
 
 	public function testReturnsSuccessWithoutObjectStoreOption(): void {
@@ -62,8 +63,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->config->expects($this->never())->method('getSystemValue');
 		$this->bucketService->expects($this->never())->method('setAutoclassForBucket');
 
-		$statusCode = $this->commandTester->execute([]);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output);
+		$this->assertSame(ExitCode::Success, $statusCode);
 	}
 
 	public function testReportsMissingObjectStoreConfiguration(): void {
@@ -74,8 +75,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->bucketService->expects($this->never())
 			->method('setAutoclassForBucket');
 
-		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs']);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output, 'gcs');
+		$this->assertSame(ExitCode::Failure, $statusCode);
 	}
 
 	public function testReturnsSuccessWithoutBucketOption(): void {
@@ -85,8 +86,8 @@ final class AutoclassEnableTest extends TestCase {
 			->willReturn(['gcs' => ['arguments' => ['hostname' => 'storage.googleapis.com']]]);
 		$this->bucketService->expects($this->never())->method('setAutoclassForBucket');
 
-		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs']);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output, 'gcs');
+		$this->assertSame(ExitCode::Failure, $statusCode);
 	}
 
 	public function testSkipsSilentlyForNonGcsHostname(): void {
@@ -97,8 +98,8 @@ final class AutoclassEnableTest extends TestCase {
 		$this->appConfig->expects($this->never())->method('getAppValueString');
 		$this->bucketService->expects($this->never())->method('setAutoclassForBucket');
 
-		$statusCode = $this->commandTester->execute(['--object-store' => 's3', '--bucket' => 'my-bucket']);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output, 's3', 'my-bucket');
+		$this->assertSame(ExitCode::Failure, $statusCode);
 	}
 
 	public function testReportsBucketNotYetCreated(): void {
@@ -114,8 +115,8 @@ final class AutoclassEnableTest extends TestCase {
 			->with('my-bucket', true)
 			->willThrowException(new BucketMissingException());
 
-		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output, 'gcs', 'my-bucket');
+		$this->assertSame(ExitCode::Failure, $statusCode);
 	}
 
 	public function testReturnsFailureWhenServiceFailsToEnableAutoclass(): void {
@@ -130,8 +131,8 @@ final class AutoclassEnableTest extends TestCase {
 			->method('setAutoclassForBucket')
 			->willReturn(false);
 
-		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
-		$this->assertSame(Command::FAILURE, $statusCode);
+		$statusCode = $this->command->enable($this->output, 'gcs', 'my-bucket');
+		$this->assertSame(ExitCode::Failure, $statusCode);
 	}
 
 	public function testReturnsSuccessWhenServiceEnablesAutoclass(): void {
@@ -144,7 +145,16 @@ final class AutoclassEnableTest extends TestCase {
 			->willReturn('{"client_email":"a@b.com"}');
 		$this->bucketService->expects($this->once())->method('setAutoclassForBucket')->willReturn(true);
 
-		$statusCode = $this->commandTester->execute(['--object-store' => 'gcs', '--bucket' => 'my-bucket']);
-		$this->assertSame(Command::SUCCESS, $statusCode);
+		$statusCode = $this->command->enable($this->output, 'gcs', 'my-bucket');
+		$this->assertSame(ExitCode::Success, $statusCode);
+	}
+
+	public function testDisable(): void {
+		$this->appConfig->expects($this->once())
+			->method('setAppValueBool')
+			->with(ConfigLexicon::AUTOCLASS_ENABLED, false);
+
+		$statusCode = $this->command->disable($this->output);
+		$this->assertSame(ExitCode::Success, $statusCode);
 	}
 }
