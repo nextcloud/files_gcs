@@ -7,10 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## v5.0.1
+### Fixed
+- enable autoclass for bucket only when autoclass config is set
+
 ## v5.0.0
 ### Added
 - chore: Support Nextcloud 33
 - chore: bump v5.0.0-dev.00
+
+## v4.1.1
+### Fixed
+- enable autoclass for bucket only when autoclass config is set
 
 ## v4.1.0
 ### Added
@@ -37,6 +45,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - build: setup krankerl by @leftybournes in https://github.com/nextcloud/files_gcs/pull/72
 - fix: correct ocs url by @leftybournes in https://github.com/nextcloud/files_gcs/pull/77
 - chore(release): v4.0.0 by @leftybournes in https://github.com/nextcloud/files_gcs/pull/82
+
+## v3.1.1
+### Fixed
+- enable autoclass for bucket only when autoclass config is set
 
 ## v3.1.0
 ### Added
@@ -78,6 +90,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [stable31] build: setup krankerl by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/73
 - [stable31] fix: correct ocs url by @backportbot[bot] in https://github.com/nextcloud/files_gcs/pull/79
 
+
+## v2.2.1
+### Fixed
+- enable autoclass for bucket only when autoclass config is set
 
 ## v2.2.0
 ### Added
@@ -124,6 +140,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - feat: throw a bucket missing exception if the bucket does not exist
 - feat: add options to specify object store and bucket
 - fix: only enable autoclass if it's disabled
+
+## v1.0.2
+### Fixed
+- enable autoclass for bucket only when autoclass config is set
 
 ## v1.0.1
 ### Added
