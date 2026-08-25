@@ -10,49 +10,35 @@ namespace OCA\FilesGCS\Command;
 
 use OCA\FilesGCS\ConfigLexicon;
 use OCP\AppFramework\Services\IAppConfig;
-use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use OCP\Console\Attribute\Argument;
+use OCP\Console\Attribute\AsCommand;
+use OCP\Console\ExitCode;
+use OCP\Console\IOutput;
 
-class TerminalStorageClassSet extends Command {
+#[AsCommand(
+	name: 'files_gcs:terminal_storage_class:set',
+	description: 'Set the terminal storage class for new buckets. Possible values are "Nearline" (default) and "Archive"'
+)]
+class TerminalStorageClassSet {
 	public function __construct(
 		private IAppConfig $appConfig,
 	) {
-		parent::__construct();
 	}
 
-	#[\Override]
-	protected function configure(): void {
-		$this->setName('files_gcs:terminal_storage_class:set')
-			->setDescription('Set the terminal storage class for new buckets. Defaults to Nearline')
-			->addArgument(
-				'storage',
-				InputArgument::REQUIRED,
-				'Can be set to "Nearline" (default) or "Archive"'
-			);
-	}
-
-	#[\Override]
-	protected function execute(InputInterface $input, OutputInterface $output): int {
-		/** @var ?string $storageClass */
-		$storageClass = $input->getArgument('storage');
-
-		if ($storageClass === null) {
-			$output->writeln('No storage class provided. Terminal storage class must be "Nearline" or "Archive"');
-
-			return Command::INVALID;
-		}
-
-		if (strtolower($storageClass) !== 'nearline' && strtolower($storageClass) !== 'archive') {
+	public function __invoke(
+		IOutput $output,
+		#[Argument]
+		string $storage,
+	): ExitCode {
+		if (strtolower($storage) !== 'nearline' && strtolower($storage) !== 'archive') {
 			$output->writeln('Invalid storage class. Terminal storage class must be "Nearline" or "Archive"');
 
-			return Command::INVALID;
+			return ExitCode::Invalid;
 		}
 
-		$this->appConfig->setAppValueString(ConfigLexicon::TERMINAL_STORAGE_CLASS, $storageClass);
-		$output->writeln('Terminal storage class set to ' . $storageClass);
+		$this->appConfig->setAppValueString(ConfigLexicon::TERMINAL_STORAGE_CLASS, $storage);
+		$output->writeln('Terminal storage class set to ' . $storage);
 
-		return Command::SUCCESS;
+		return ExitCode::Success;
 	}
 }

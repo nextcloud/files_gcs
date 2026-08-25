@@ -5,17 +5,12 @@
       <code><![CDATA[__construct]]></code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="lib/Command/AutoclassDisable.php">
-    <UnusedClass>
-      <code><![CDATA[AutoclassDisable]]></code>
-    </UnusedClass>
-  </file>
-  <file src="lib/Command/AutoclassEnable.php">
+  <file src="lib/Command/AutoclassCommands.php">
     <MixedArgument>
-      <code><![CDATA[$objectstore['arguments']['hostname']]]></code>
+      <code><![CDATA[$config['arguments']['hostname']]]></code>
     </MixedArgument>
     <UnusedClass>
-      <code><![CDATA[AutoclassEnable]]></code>
+      <code><![CDATA[AutoclassCommands]]></code>
     </UnusedClass>
   </file>
   <file src="lib/Command/CredentialsImport.php">
